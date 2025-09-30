@@ -1,0 +1,2 @@
+# Dependências Python para a Fábrica
+sentry-sdk>=1.0.0

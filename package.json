@@ -1,0 +1,21 @@
+{
+  "name": "fabrica",
+  "version": "1.0.0",
+  "description": "Fábrica de Desenvolvimento Disciplinado",
+  "scripts": {
+    "gatekeeper:eslint": "npx eslint .",
+    "gatekeeper:prettier": "npx prettier -c .",
+    "gatekeeper:semgrep": "semgrep --config auto",
+    "gatekeeper:gitleaks": "gitleaks detect --no-git -c fabrica/.gitleaks.toml",
+    "gatekeeper:npm-audit": "npm audit --audit-level=high",
+    "gatekeeper:pip-audit": "~/.local/bin/pip-audit -r requirements.txt",
+    "gatekeeper:sentry": "grep -Riq 'sentry' . && grep -q 'SENTRY_DSN' env.example"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  },
+  "dependencies": {
+    "@sentry/node": "^7.0.0"
+  }
+}

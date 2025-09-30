@@ -1,0 +1,13 @@
+title = "Gitleaks configuration for Fábrica"
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(api[_-]?key|apikey|access[_-]?key|secret[_-]?key|private[_-]?key)['"]?\s*[:=]\s*['"]?[a-zA-Z0-9_\-]{20,}['"]?'''
+tags = ["key", "api"]
+
+[[rules]]
+id = "generic-token"
+description = "Generic Token"
+regex = '''(?i)(token|bearer|auth)['"]?\s*[:=]\s*['"]?[a-zA-Z0-9_\-\.]{20,}['"]?'''
+tags = ["token", "auth"]
