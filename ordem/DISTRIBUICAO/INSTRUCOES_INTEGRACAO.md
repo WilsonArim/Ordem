@@ -40,7 +40,7 @@ cd /caminho/do/seu/repo/
 Estrutura resultante:
 ```
 seu-repo/
-├── fabrica/
+├── ordem/
 │   ├── hooks/
 │   ├── validate_sop.sh
 │   ├── verifica_luz_verde.sh
@@ -59,22 +59,22 @@ seu-repo/
 
 ### 2️⃣ **Instalar Hook Pre-Commit**
 ```bash
-chmod +x fabrica/hooks/pre-commit.sh
-chmod +x fabrica/validate_sop.sh
-chmod +x fabrica/verifica_luz_verde.sh
-chmod +x fabrica/gatekeeper.sh
+chmod +x ordem/hooks/pre-commit.sh
+chmod +x ordem/validate_sop.sh
+chmod +x ordem/verifica_luz_verde.sh
+chmod +x ordem/gatekeeper.sh
 
 # Instalar hook
-cp fabrica/hooks/pre-commit.sh .git/hooks/pre-commit
+cp ordem/hooks/pre-commit.sh .git/hooks/pre-commit
 ```
 
 ### 3️⃣ **Validar Instalação**
 ```bash
 # Validar SOP
-./fabrica/validate_sop.sh
+./ordem/validate_sop.sh
 
 # Verificar luz verde
-./fabrica/verifica_luz_verde.sh
+./ordem/verifica_luz_verde.sh
 ```
 
 **Saídas esperadas**:
@@ -88,7 +88,7 @@ Adicionar scripts de Gatekeeper ao `package.json`:
 ```json
 {
   "scripts": {
-    "gatekeeper": "./fabrica/gatekeeper.sh",
+    "gatekeeper": "./ordem/gatekeeper.sh",
     "gatekeeper:eslint": "eslint .",
     "gatekeeper:prettier": "prettier --check .",
     "gatekeeper:semgrep": "semgrep --config auto .",
@@ -114,16 +114,16 @@ echo "SENTRY_DSN=your-sentry-dsn-here" > env.example
 ## 🧭 FLUXO DE TRABALHO
 
 ### Para o Codex (AI Assistant)
-1. **Ler onboarding**: `fabrica/CODEX_ONBOARDING.md`
-2. **Ler SOP**: `fabrica/SOP.md`
-3. **Receber ordem**: `fabrica/CLAUDE_QUEUE.md`
-4. **Executar trabalho**: Aplicar patch, atualizar `fabrica/relatorio.md`
-5. **Verificar luz verde**: `./fabrica/verifica_luz_verde.sh`
+1. **Ler onboarding**: `ordem/CODEX_ONBOARDING.md`
+2. **Ler SOP**: `ordem/SOP.md`
+3. **Receber ordem**: `ordem/CLAUDE_QUEUE.md`
+4. **Executar trabalho**: Aplicar patch, atualizar `ordem/relatorio.md`
+5. **Verificar luz verde**: `./ordem/verifica_luz_verde.sh`
    - 🟡 Exit 10 → Avisar Operador para Gatekeeper
    - 🟢 Exit 0 → Avisar Operador para Git
 
 ### Para o Operador (Humano)
-1. **Após 🟡**: Executar `./fabrica/gatekeeper.sh`
+1. **Após 🟡**: Executar `./ordem/gatekeeper.sh`
 2. **Após 🟢**: Executar Git:
    ```bash
    git add .
@@ -136,29 +136,29 @@ echo "SENTRY_DSN=your-sentry-dsn-here" > env.example
 ## 🔧 COMANDOS ESSENCIAIS
 
 ### VSCode Tasks (Ctrl+Shift+P → "Run Task")
-- **SOP: Validar** → `./fabrica/validate_sop.sh`
-- **Fábrica: Gatekeeper (7/7)** → `./fabrica/gatekeeper.sh`
-- **Fábrica: Verificar luz verde** → `./fabrica/verifica_luz_verde.sh`
-- **Pipeline: Atualizar TOC** → `./fabrica/update_pipeline_toc.sh`
+- **SOP: Validar** → `./ordem/validate_sop.sh`
+- **Fábrica: Gatekeeper (7/7)** → `./ordem/gatekeeper.sh`
+- **Fábrica: Verificar luz verde** → `./ordem/verifica_luz_verde.sh`
+- **Pipeline: Atualizar TOC** → `./ordem/update_pipeline_toc.sh`
 
 ### Terminal
 ```bash
 # Validar tudo
-./fabrica/validate_sop.sh
+./ordem/validate_sop.sh
 
 # Ver estado
-./fabrica/verifica_luz_verde.sh
+./ordem/verifica_luz_verde.sh
 
 # Gatekeeper completo
-./fabrica/gatekeeper.sh
+./ordem/gatekeeper.sh
 
 # Criar pipeline
-./fabrica/make_chapter.sh M02 autenticacao
-./fabrica/make_stage.sh M02 E01 base-tokens
-./fabrica/make_task.sh M02 E01 T001 endpoint-login
+./ordem/make_chapter.sh M02 autenticacao
+./ordem/make_stage.sh M02 E01 base-tokens
+./ordem/make_task.sh M02 E01 T001 endpoint-login
 
 # Atualizar TOC
-./fabrica/update_pipeline_toc.sh
+./ordem/update_pipeline_toc.sh
 ```
 
 ---
@@ -166,7 +166,7 @@ echo "SENTRY_DSN=your-sentry-dsn-here" > env.example
 ## ⚠️ REGRAS IMPORTANTES
 
 ### IDs e Formatos
-- **fabrica/** e **treino_torre/**: `ID: YYYY-MM-DD-XXX` (data)
+- **ordem/** e **treino_torre/**: `ID: YYYY-MM-DD-XXX` (data)
 - **pipeline/**: `ID: Mxx`, `ID: Eyy`, `ID: Txxx` (código)
 - **TASK.md**: Secção `## CRITÉRIOS` com **≥ 2** checklists obrigatórios
 
@@ -185,7 +185,7 @@ echo "SENTRY_DSN=your-sentry-dsn-here" > env.example
 ### Hook bloqueia commit
 ```bash
 # Ver erro específico
-./fabrica/validate_sop.sh
+./ordem/validate_sop.sh
 
 # Bypass emergencial (USE COM CUIDADO)
 SKIP_SOP=1 git commit -m "..."
@@ -207,23 +207,23 @@ npm run gatekeeper:semgrep
 
 ## 📚 DOCUMENTAÇÃO COMPLETA
 
-- **Manual da Fábrica**: `fabrica/MANUAL.md`
-- **SOP**: `fabrica/SOP.md`
-- **Onboarding Codex**: `fabrica/CODEX_ONBOARDING.md`
-- **Como usar Gatekeeper**: `fabrica/como_usar_gatekeeper.md`
+- **Manual da Fábrica**: `ordem/MANUAL.md`
+- **SOP**: `ordem/SOP.md`
+- **Onboarding Codex**: `ordem/CODEX_ONBOARDING.md`
+- **Como usar Gatekeeper**: `ordem/como_usar_gatekeeper.md`
 
 ---
 
 ## ✅ CHECKLIST DE INTEGRAÇÃO
 
 - [ ] Pacote extraído na raiz do repositório
-- [ ] Hook pre-commit instalado (`cp fabrica/hooks/pre-commit.sh .git/hooks/pre-commit`)
-- [ ] Scripts executáveis (`chmod +x fabrica/*.sh`)
+- [ ] Hook pre-commit instalado (`cp ordem/hooks/pre-commit.sh .git/hooks/pre-commit`)
+- [ ] Scripts executáveis (`chmod +x ordem/*.sh`)
 - [ ] `package.json` configurado com scripts Gatekeeper
 - [ ] `requirements.txt` criado
 - [ ] `env.example` criado com `SENTRY_DSN`
-- [ ] `./fabrica/validate_sop.sh` a verde
-- [ ] `./fabrica/verifica_luz_verde.sh` executado com sucesso
+- [ ] `./ordem/validate_sop.sh` a verde
+- [ ] `./ordem/verifica_luz_verde.sh` executado com sucesso
 - [ ] VSCode tasks funcionais
 
 ---

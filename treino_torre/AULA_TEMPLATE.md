@@ -54,6 +54,6 @@ estado_final: DONE
 
 ## 9) LINKS
 
-- Ordem: fabrica/CLAUDE_QUEUE.md (ID …)
-- Relatório: fabrica/relatorio.md (secção correspondente)
+- Ordem: ordem/CLAUDE_QUEUE.md (ID …)
+- Relatório: ordem/relatorio.md (secção correspondente)
 - Commit:

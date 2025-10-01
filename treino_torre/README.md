@@ -9,7 +9,7 @@ Cada ORDEM concluída (DONE) vira **uma aula** para a Torre. As aulas explicam:
 
 1. Após o Gatekeeper dar 7/7 PASSOU e o Estado-Maior marcar DONE:
 
-./fabrica/make_aula.sh 2025-09-30-001 "M01" "E01" "T001" "micro-gama-jwt" "jwt,rbac,fastapi"
+./ordem/make_aula.sh 2025-09-30-001 "M01" "E01" "T001" "micro-gama-jwt" "jwt,rbac,fastapi"
 
 2. O script gera `/treino_torre/2025-09-30-001-micro-gama-jwt.md` a partir do template.
 3. O Engenheiro (Claude) preenche as secções com PATCH, TESTES, RCA e PLAYBOOK.

@@ -16,7 +16,7 @@ A sequência completa de desenvolvimento disciplinado:
    - Autoriza Gatekeeper
 
 3. **Operador** corre Gatekeeper
-   - Executa `./fabrica/gatekeeper.sh`
+   - Executa `./ordem/gatekeeper.sh`
    - Aguarda resultado 7/7 PASSOU
 
 4. **Estado-Maior** valida 7/7

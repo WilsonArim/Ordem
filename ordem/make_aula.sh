@@ -3,7 +3,7 @@ set -euo pipefail
 
 if [ $# -lt 6 ]; then
   echo "Uso: $0 <ID> <CAPITULO> <ETAPA> <TAREFA> <SLUG> <TAGS>"
-  echo "Ex:  ./fabrica/make_aula.sh 2025-09-30-001 M01 E01 T001 micro-gama-jwt 'jwt,rbac,fastapi'"
+  echo "Ex:  ./ordem/make_aula.sh 2025-09-30-001 M01 E01 T001 micro-gama-jwt 'jwt,rbac,fastapi'"
   exit 1
 fi
 
@@ -59,8 +59,8 @@ TODO
 \`\`\`
 
 ## 9) LINKS
-- Ordem: fabrica/CLAUDE_QUEUE.md (ID ${ID})
-- Relatório: fabrica/relatorio.md
+- Ordem: ordem/CLAUDE_QUEUE.md (ID ${ID})
+- Relatório: ordem/relatorio.md
 - Commit: TODO
 EOF
 

@@ -12,24 +12,24 @@ AÇÃO:
 Blindar a Fábrica (hook + validação adicional) e criar MANUAL.md.
 
 DETALHES (PASSOS CONCRETOS):
-1) Criar `fabrica/hooks/pre-commit.sh` com o BLOCO A, dar `chmod +x`, e instruir cópia para `.git/hooks/pre-commit`.
-2) Atualizar `fabrica/validate_sop.sh` adicionando a verificação “CRITÉRIOS ≥ 2” para **todas as TASK.md** (BLOCO B).
-3) Criar `fabrica/MANUAL.md` com o BLOCO C.
+1) Criar `ordem/hooks/pre-commit.sh` com o BLOCO A, dar `chmod +x`, e instruir cópia para `.git/hooks/pre-commit`.
+2) Atualizar `ordem/validate_sop.sh` adicionando a verificação “CRITÉRIOS ≥ 2” para **todas as TASK.md** (BLOCO B).
+3) Criar `ordem/MANUAL.md` com o BLOCO C.
 4) Executar:
-   - `./fabrica/update_pipeline_toc.sh` (uma vez)
-   - `./fabrica/validate_sop.sh` (deve sair 0)
-5) Atualizar `fabrica/relatorio.md` (PLAN, PATCH, TESTS, SELF-CHECK).
+   - `./ordem/update_pipeline_toc.sh` (uma vez)
+   - `./ordem/validate_sop.sh` (deve sair 0)
+5) Atualizar `ordem/relatorio.md` (PLAN, PATCH, TESTS, SELF-CHECK).
 
 CRITÉRIOS (mensuráveis):
 - [ ] Hook criado, executável e instalado em `.git/hooks/pre-commit`
 - [ ] `pre-commit` atualiza TOC e bloqueia commit se o validador falhar
 - [ ] `validate_sop.sh` reprova qualquer TASK com `< 2` critérios
-- [ ] `fabrica/MANUAL.md` criado e completo
-- [ ] `./fabrica/validate_sop.sh` a verde
+- [ ] `ordem/MANUAL.md` criado e completo
+- [ ] `./ordem/validate_sop.sh` a verde
 - [ ] **RELATORIO.MD ATUALIZADO**
 
 HANDOFF:
-- Depois do relatório OK, o Codex corre `./fabrica/verifica_luz_verde.sh`:
+- Depois do relatório OK, o Codex corre `./ordem/verifica_luz_verde.sh`:
   - 10 → Operador corre Gatekeeper
   - 0  → Operador faz Git (commit `[ORD-YYYY-MM-DD-XXX] …`)
 
@@ -39,7 +39,7 @@ HANDOFF:
 - Estado-Maior (GPT-5): supervisiona doutrina.
 - Operador: Gatekeeper/Git apenas após luz verde.
 
-# BLOCO A — fabrica/hooks/pre-commit.sh
+# BLOCO A — ordem/hooks/pre-commit.sh
 ```bash
 #!/usr/bin/env bash
 # Fábrica — pre-commit: mantém TOC atualizado e reforça disciplina
@@ -49,19 +49,19 @@ ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo ".")"
 cd "$ROOT"
 
 # Se existir o updater, corre e adiciona TOC
-if [ -x "./fabrica/update_pipeline_toc.sh" ]; then
+if [ -x "./ordem/update_pipeline_toc.sh" ]; then
   echo "🧭 Atualizando PIPELINE_TOC.md…"
-  ./fabrica/update_pipeline_toc.sh >/dev/null || {
+  ./ordem/update_pipeline_toc.sh >/dev/null || {
     echo "❌ Falha a atualizar TOC"; exit 1;
   }
   git add pipeline/PIPELINE_TOC.md 2>/dev/null || true
 fi
 
 # Corre o validador SOP — bloqueia commit se falhar
-if [ -x "./fabrica/validate_sop.sh" ]; then
+if [ -x "./ordem/validate_sop.sh" ]; then
   echo "🛡️  Validando SOP antes do commit…"
-  if ! ./fabrica/validate_sop.sh >/dev/null; then
-    echo "❌ Commit bloqueado: SOP inválido. Veja ./fabrica/validate_sop.sh"
+  if ! ./ordem/validate_sop.sh >/dev/null; then
+    echo "❌ Commit bloqueado: SOP inválido. Veja ./ordem/validate_sop.sh"
     exit 1
   fi
 fi
@@ -70,12 +70,12 @@ echo "✅ Pre-commit ok."
 
 Instalação local do hook (Operador):
 
-chmod +x fabrica/hooks/pre-commit.sh
-cp fabrica/hooks/pre-commit.sh .git/hooks/pre-commit
+chmod +x ordem/hooks/pre-commit.sh
+cp ordem/hooks/pre-commit.sh .git/hooks/pre-commit
 
 
 
-BLOCO B — adição ao fabrica/validate_sop.sh (CRITÉRIOS ≥ 2 nas TASKS)
+BLOCO B — adição ao ordem/validate_sop.sh (CRITÉRIOS ≥ 2 nas TASKS)
 
 Instruções: inserir este bloco depois da secção “Pipeline — STATUS válidos (…)” e antes da secção “SOP.md (se existir)”.
 
@@ -98,7 +98,7 @@ if [ -d "pipeline" ]; then
   ok "Pipeline — todas as TASKs com >= 2 critérios"
 fi
 
-BLOCO C — fabrica/MANUAL.md
+BLOCO C — ordem/MANUAL.md
 
 # MANUAL da Fábrica
 
@@ -109,36 +109,36 @@ BLOCO C — fabrica/MANUAL.md
 - **Operador (Tu)**: corre Gatekeeper e Git, quando autorizado.
 
 ## Linha de Montagem (Inviolável)
-1. **Ordem** (ORDER_TEMPLATE) → entra em `fabrica/CLAUDE_QUEUE.md`.
-2. **Execução** (Claude) → aplica PATCH e **atualiza `fabrica/relatorio.md`** (PLAN, PATCH, TESTS, SELF-CHECK).
-3. **Inspeção** (Codex) → `./fabrica/verifica_luz_verde.sh`
-   - `🟡 PRONTO PARA GATEKEEPER` (exit 10) → Operador: `./fabrica/gatekeeper.sh`
+1. **Ordem** (ORDER_TEMPLATE) → entra em `ordem/CLAUDE_QUEUE.md`.
+2. **Execução** (Claude) → aplica PATCH e **atualiza `ordem/relatorio.md`** (PLAN, PATCH, TESTS, SELF-CHECK).
+3. **Inspeção** (Codex) → `./ordem/verifica_luz_verde.sh`
+   - `🟡 PRONTO PARA GATEKEEPER` (exit 10) → Operador: `./ordem/gatekeeper.sh`
    - `🟢 VERDE` (exit 0) → Git permitido
 4. **Gatekeeper** (Operador) → 7/7 PASSOU documentado no relatório.
 5. **Git** (Operador) → commit com `[ORD-YYYY-MM-DD-XXX] …` e push.
 
 ## Pipeline (Capítulo → Etapa → Tarefa)
 - Criar:
-  - `./fabrica/make_chapter.sh M01 autenticacao`
-  - `./fabrica/make_stage.sh   M01 E01 base-tokens`
-  - `./fabrica/make_task.sh    M01 E01 T001 endpoint-login`
-- Atualizar TOC: `./fabrica/update_pipeline_toc.sh` (também automático no pre-commit).
+  - `./ordem/make_chapter.sh M01 autenticacao`
+  - `./ordem/make_stage.sh   M01 E01 base-tokens`
+  - `./ordem/make_task.sh    M01 E01 T001 endpoint-login`
+- Atualizar TOC: `./ordem/update_pipeline_toc.sh` (também automático no pre-commit).
 - **Regras**:
   - Em `pipeline/…/Mxx|Eyy|Tzzz.md`: `ID` é **código** (M/E/T), `STATUS` em {TODO, EM_PROGRESSO, EM_REVISAO, AGUARDA_GATEKEEPER, DONE}.
-  - Em `fabrica/` e `treino_torre/`: `ID` é **data** `YYYY-MM-DD-XXX`.
+  - Em `ordem/` e `treino_torre/`: `ID` é **data** `YYYY-MM-DD-XXX`.
   - Em `TASK.md`: secção **CRITÉRIOS** com **≥ 2** itens `- [ ]` / `- [x]` (obrigatório).
 
 ## Hooks (Disciplina Automática)
-- `fabrica/hooks/pre-commit.sh` → atualiza TOC, valida SOP e **bloqueia commit** se falhar.
+- `ordem/hooks/pre-commit.sh` → atualiza TOC, valida SOP e **bloqueia commit** se falhar.
 - Instalação:
   ```bash
-  chmod +x fabrica/hooks/pre-commit.sh
-  cp fabrica/hooks/pre-commit.sh .git/hooks/pre-commit
+  chmod +x ordem/hooks/pre-commit.sh
+  cp ordem/hooks/pre-commit.sh .git/hooks/pre-commit
 
 Comandos Essenciais
-	•	Validar SOP: ./fabrica/validate_sop.sh
-	•	Ver luz verde: ./fabrica/verifica_luz_verde.sh
-	•	Gatekeeper: ./fabrica/gatekeeper.sh
+	•	Validar SOP: ./ordem/validate_sop.sh
+	•	Ver luz verde: ./ordem/verifica_luz_verde.sh
+	•	Gatekeeper: ./ordem/gatekeeper.sh
 
 Commits (Convenção)
 	•	Mensagem deve conter: [ORD-YYYY-MM-DD-XXX] Descrição curta do patch

@@ -18,15 +18,15 @@
 
 Quando integrado num novo repositório, encontra tudo em:
 
-- **SOP e Doutrina**: `fabrica/SOP.md`
-- **Templates**: `fabrica/ORDER_TEMPLATE.md`, `pipeline/_templates/`
+- **SOP e Doutrina**: `ordem/SOP.md`
+- **Templates**: `ordem/ORDER_TEMPLATE.md`, `pipeline/_templates/`
 - **Scripts**:
-  - `fabrica/validate_sop.sh` - Validador SOP
-  - `fabrica/verifica_luz_verde.sh` - Inspetor (luz verde)
-  - `fabrica/gatekeeper.sh` - Gatekeeper 7/7
-  - `fabrica/update_pipeline_toc.sh` - Atualizar TOC
-- **Documentação**: `fabrica/MANUAL.md`, `fabrica/como_usar_gatekeeper.md`
-- **Estado Atual**: `fabrica/CLAUDE_QUEUE.md`, `fabrica/relatorio.md`
+  - `ordem/validate_sop.sh` - Validador SOP
+  - `ordem/verifica_luz_verde.sh` - Inspetor (luz verde)
+  - `ordem/gatekeeper.sh` - Gatekeeper 7/7
+  - `ordem/update_pipeline_toc.sh` - Atualizar TOC
+- **Documentação**: `ordem/MANUAL.md`, `ordem/como_usar_gatekeeper.md`
+- **Estado Atual**: `ordem/CLAUDE_QUEUE.md`, `ordem/relatorio.md`
 - **Pipeline**: `pipeline/PIPELINE_TOC.md`, `pipeline/modulos/`
 
 ---
@@ -35,14 +35,14 @@ Quando integrado num novo repositório, encontra tudo em:
 
 ### 1. Leitura Obrigatória
 Antes de começar, leia:
-- `fabrica/SOP.md` - Fluxo de linha de montagem e papéis
-- `fabrica/ORDER_TEMPLATE.md` - Template para ordens
+- `ordem/SOP.md` - Fluxo de linha de montagem e papéis
+- `ordem/ORDER_TEMPLATE.md` - Template para ordens
 - `pipeline/PIPELINE_TOC.md` - Estrutura de projetos
 
 ### 2. Gerar Ordens
 Para criar uma nova ordem:
-1. Abra `fabrica/CLAUDE_QUEUE.md`
-2. Siga o template em `fabrica/ORDER_TEMPLATE.md`
+1. Abra `ordem/CLAUDE_QUEUE.md`
+2. Siga o template em `ordem/ORDER_TEMPLATE.md`
 3. Preencha todos os campos obrigatórios
 4. Inclua sempre as cláusulas:
    - "RELATORIO.MD ATUALIZADO (PLAN, PATCH, TESTS, SELF-CHECK) — REGRA INVIOLÁVEL"
@@ -51,7 +51,7 @@ Para criar uma nova ordem:
 
 ### 3. Após Cada Ordem
 Sempre que uma ordem terminar:
-1. Execute: `./fabrica/verifica_luz_verde.sh`
+1. Execute: `./ordem/verifica_luz_verde.sh`
 2. Verifique o código de saída:
    - **Exit 0 (VERDE)**: Tudo OK, pode prosseguir
    - **Exit 10 (PRONTO PARA GATEKEEPER)**: Ordenar Operador a correr Gatekeeper
@@ -60,7 +60,7 @@ Sempre que uma ordem terminar:
 ### 4. Fluxo de Decisão
 
 #### Se `verifica_luz_verde.sh` retorna VERDE (exit 0):
-- **E Gatekeeper pendente**: Ordenar Operador a correr `./fabrica/gatekeeper.sh`
+- **E Gatekeeper pendente**: Ordenar Operador a correr `./ordem/gatekeeper.sh`
 - **E Gatekeeper já passou**: Ordenar Operador a fazer Git com convenção `[ORD-YYYY-MM-DD-XXX]`
 
 #### Se `verifica_luz_verde.sh` retorna BLOQUEADO (exit 1):
@@ -69,7 +69,7 @@ Sempre que uma ordem terminar:
 - Não prosseguir até correção
 
 #### Se `verifica_luz_verde.sh` retorna PRONTO PARA GATEKEEPER (exit 10):
-- Ordenar Operador a executar `./fabrica/gatekeeper.sh`
+- Ordenar Operador a executar `./ordem/gatekeeper.sh`
 - Aguardar resultado
 - Reexecutar `verifica_luz_verde.sh` após Gatekeeper
 
@@ -77,13 +77,13 @@ Sempre que uma ordem terminar:
 
 ```bash
 # Verificar luz verde
-./fabrica/verifica_luz_verde.sh
+./ordem/verifica_luz_verde.sh
 
 # Validar SOP
-./fabrica/validate_sop.sh
+./ordem/validate_sop.sh
 
 # Executar Gatekeeper (Operador)
-./fabrica/gatekeeper.sh
+./ordem/gatekeeper.sh
 
 # Verificar estado atual
 echo "Exit code: $?"
@@ -99,7 +99,7 @@ echo "Exit code: $?"
 
 Quando `verifica_luz_verde.sh` retorna BLOQUEADO:
 1. Copie a mensagem de erro
-2. Adicione ao `fabrica/relatorio.md` na secção apropriada
+2. Adicione ao `ordem/relatorio.md` na secção apropriada
 3. Documente o motivo e a ação necessária
 4. Devolva ao Engenheiro (Claude)
 
@@ -126,7 +126,7 @@ git push
 
 #### SOP inválido:
 ```bash
-./fabrica/validate_sop.sh
+./ordem/validate_sop.sh
 # Corrigir problemas reportados
 ```
 
@@ -138,7 +138,7 @@ git push
 #### Gatekeeper falhou:
 - Verificar logs de erro
 - Corrigir problemas reportados
-- Reexecutar `./fabrica/gatekeeper.sh`
+- Reexecutar `./ordem/gatekeeper.sh`
 
 ## Lembretes Importantes
 

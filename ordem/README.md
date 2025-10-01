@@ -4,7 +4,7 @@ Sistema de desenvolvimento com disciplina automática, validação SOP e Gatekee
 
 ## Estrutura
 
-- `fabrica/` - Scripts e configurações da Fábrica
+- `ordem/` - Scripts e configurações da Fábrica
 - `treino_torre/` - Aulas para treino da Torre (Qwen)
 - `pipeline/` - Modelo doutrinado da pipeline (Capítulos → Etapas → Tarefas)
 
@@ -13,7 +13,7 @@ Sistema de desenvolvimento com disciplina automática, validação SOP e Gatekee
 ### Validação SOP
 
 ```bash
-./fabrica/validate_sop.sh
+./ordem/validate_sop.sh
 ```
 
 Valida todas as regras de disciplina da Fábrica.
@@ -21,7 +21,7 @@ Valida todas as regras de disciplina da Fábrica.
 ### Gatekeeper
 
 ```bash
-./fabrica/gatekeeper.sh
+./ordem/gatekeeper.sh
 ```
 
 Executa os 7 testes de qualidade: ESLint, Prettier, Semgrep, Gitleaks, npm-audit, pip-audit, Sentry.
@@ -51,7 +51,7 @@ O hook pre-commit executa automaticamente:
 **Instalação:**
 
 ```bash
-cp fabrica/hooks/pre-commit.sh .git/hooks/pre-commit
+cp ordem/hooks/pre-commit.sh .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
 
@@ -145,7 +145,7 @@ O workflow `.github/workflows/fabrica-ci.yml` executa em:
 
 ### Operação Diária
 1. **Ler ordens** em `CLAUDE_QUEUE.md`
-2. **Executar inspetor** após cada ordem: `./fabrica/verifica_luz_verde.sh`
+2. **Executar inspetor** após cada ordem: `./ordem/verifica_luz_verde.sh`
 3. **Decidir próxima ação** baseado no código de saída:
    - **Exit 0 (VERDE)**: Ordenar Git se Gatekeeper passou
    - **Exit 10 (PRONTO PARA GATEKEEPER)**: Ordenar Operador a correr Gatekeeper
@@ -154,13 +154,13 @@ O workflow `.github/workflows/fabrica-ci.yml` executa em:
 ### Comandos Essenciais
 ```bash
 # Inspetor principal
-./fabrica/verifica_luz_verde.sh
+./ordem/verifica_luz_verde.sh
 
 # Validação SOP
-./fabrica/validate_sop.sh
+./ordem/validate_sop.sh
 
 # Gatekeeper (Operador)
-./fabrica/gatekeeper.sh
+./ordem/gatekeeper.sh
 ```
 
 ### VSCode Tasks
@@ -170,7 +170,7 @@ Use `Ctrl+Shift+P` → "Tasks: Run Task":
 - **Fábrica: Verificar luz verde (Inspetor)** - Verifica se está pronto para prosseguir
 
 ### Manual Completo
-Consulte `fabrica/CODEX_ONBOARDING.md` para instruções detalhadas.
+Consulte `ordem/CODEX_ONBOARDING.md` para instruções detalhadas.
 
 ## Troubleshooting
 
@@ -181,14 +181,14 @@ Consulte `fabrica/CODEX_ONBOARDING.md` para instruções detalhadas.
 ls -la .git/hooks/pre-commit
 
 # Reinstalar se necessário
-cp fabrica/hooks/pre-commit.sh .git/hooks/pre-commit
+cp ordem/hooks/pre-commit.sh .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
 
 ### CI Falha
 
 1. Verificar logs no GitHub Actions
-2. Executar localmente: `./fabrica/gatekeeper.sh`
+2. Executar localmente: `./ordem/gatekeeper.sh`
 3. Corrigir problemas e fazer novo commit
 
 ### ESLint Ignorado
@@ -199,7 +199,7 @@ ESLint só executa se houver ficheiros `.js`, `.ts`, `.jsx`, `.tsx`. Se não hou
 
 ```bash
 # Verificar estado detalhado
-./fabrica/verifica_luz_verde.sh
+./ordem/verifica_luz_verde.sh
 echo "Exit code: $?"
 
 # Códigos de saída:

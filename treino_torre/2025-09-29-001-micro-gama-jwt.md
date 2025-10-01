@@ -54,6 +54,6 @@ TODO
 
 ## 9) LINKS
 
-- Ordem: fabrica/CLAUDE_QUEUE.md (ID 2025-09-29-001)
-- Relatório: fabrica/relatorio.md
+- Ordem: ordem/CLAUDE_QUEUE.md (ID 2025-09-29-001)
+- Relatório: ordem/relatorio.md
 - Commit: TODO

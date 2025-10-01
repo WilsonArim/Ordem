@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Uso: ./fabrica/make_task.sh Mxx Eyy Tzzz <slug>
+# Uso: ./ordem/make_task.sh Mxx Eyy Tzzz <slug>
 if [ $# -ne 4 ]; then echo "Uso: $0 Mxx Eyy Tzzz <slug>"; exit 1; fi
 M="$1"; E="$2"; T="$3"; SLUG="$4"
 [[ "$M" =~ ^M[0-9]{2}$ ]] || { echo "Capítulo inválido (ex.: M01)"; exit 1; }

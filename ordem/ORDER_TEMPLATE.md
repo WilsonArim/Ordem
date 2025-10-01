@@ -34,7 +34,7 @@ ENTREGÁVEIS DO ENGENHEIRO (Claude):
 HANDOFF (para Gatekeeper):
 
 - Engenheiro concluiu e Estado-Maior aprovou?
-- Se SIM → Operador corre `./fabrica/gatekeeper.sh`
+- Se SIM → Operador corre `./ordem/gatekeeper.sh`
 
 ## GIT / CONTROLO DE VERSÃO
 
@@ -58,7 +58,7 @@ CHECKLIST DO ENGENHEIRO:
 - [ ] **RELATORIO.MD ATUALIZADO**
 
 ⚠️ CLÁUSULA INVIOLÁVEL
-Sem o `fabrica/relatorio.md` atualizado, **a ordem é inválida** e não avança.
+Sem o `ordem/relatorio.md` atualizado, **a ordem é inválida** e não avança.
 
 ---
 
@@ -66,6 +66,6 @@ Sem o `fabrica/relatorio.md` atualizado, **a ordem é inválida** e não avança
 
 - **Engenheiro (Claude)**: executa a ordem, aplica patch, corre testes e **atualiza `relatorio.md`**.
 - **Estado-Maior (GPT-5)**: lê o `relatorio.md`, valida critérios, só então autoriza Gatekeeper.
-- **Operador (tu)**: após autorização, corre `./fabrica/gatekeeper.sh`; executa Git apenas após 7/7 PASSOU e ordem explícita.
+- **Operador (tu)**: após autorização, corre `./ordem/gatekeeper.sh`; executa Git apenas após 7/7 PASSOU e ordem explícita.
 
 ➡️ **Se o `relatorio.md` não estiver completo e válido, a ordem NÃO segue para Gatekeeper.**

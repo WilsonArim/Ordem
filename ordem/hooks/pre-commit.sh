@@ -6,19 +6,19 @@ ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo ".")"
 cd "$ROOT"
 
 # Se existir o updater, corre e adiciona TOC
-if [ -x "./fabrica/update_pipeline_toc.sh" ]; then
+if [ -x "./ordem/update_pipeline_toc.sh" ]; then
   echo "🧭 Atualizando PIPELINE_TOC.md…"
-  ./fabrica/update_pipeline_toc.sh >/dev/null || {
+  ./ordem/update_pipeline_toc.sh >/dev/null || {
     echo "❌ Falha a atualizar TOC"; exit 1;
   }
   git add pipeline/PIPELINE_TOC.md 2>/dev/null || true
 fi
 
 # Corre o validador SOP — bloqueia commit se falhar
-if [ -x "./fabrica/validate_sop.sh" ]; then
+if [ -x "./ordem/validate_sop.sh" ]; then
   echo "🛡️  Validando SOP antes do commit…"
-  if ! ./fabrica/validate_sop.sh >/dev/null; then
-    echo "❌ Commit bloqueado: SOP inválido. Veja ./fabrica/validate_sop.sh"
+  if ! ./ordem/validate_sop.sh >/dev/null; then
+    echo "❌ Commit bloqueado: SOP inválido. Veja ./ordem/validate_sop.sh"
     exit 1
   fi
 fi

@@ -1,7 +1,7 @@
 # Como usar o Gatekeeper
 
 1. Para correr todos os testes:
-   ./fabrica/gatekeeper.sh
+   ./ordem/gatekeeper.sh
 
 2. Se todos passarem:
    ✅ GATEKEEPER: TODOS OS TESTES PASSARAM
@@ -21,5 +21,5 @@
 
 1. O Estado-Maior marca DONE no diário.
 2. Executar:
-   ./fabrica/make_aula.sh <ID> <Mxx> <Eyy> <Tzzz> <slug> "<tags>"
+   ./ordem/make_aula.sh <ID> <Mxx> <Eyy> <Tzzz> <slug> "<tags>"
 3. Inserir o link da aula no /treino_torre/TOC.md e no diário.

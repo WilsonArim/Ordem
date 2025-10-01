@@ -7,7 +7,7 @@ tests=(
   "ESLint::npx eslint ."
   "Prettier::npx prettier -c ."
   "Semgrep::semgrep --config auto"
-  "Gitleaks::gitleaks detect --no-git -c fabrica/.gitleaks.toml"
+  "Gitleaks::gitleaks detect --no-git -c ordem/.gitleaks.toml"
   "npm audit::npm audit --audit-level=high"
   "pip-audit::pip-audit -r requirements.txt"
   "Sentry::grep -Riq 'sentry' . && grep -q 'SENTRY_DSN' .env.example"

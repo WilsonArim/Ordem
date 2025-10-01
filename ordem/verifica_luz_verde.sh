@@ -3,7 +3,7 @@ set -euo pipefail
 
 # ---------------- Setup / Paths ----------------
 SELF_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SELF_DIR/.." && pwd)"   # assume fabrica/ está na raiz
+REPO_ROOT="$(cd "$SELF_DIR/.." && pwd)"   # assume ordem/ está na raiz
 cd "$REPO_ROOT"
 
 # ---------------- Options ----------------
@@ -45,15 +45,15 @@ echo "🔍 Inspetor Codex — verificação de luz verde…"
 
 # ---------------- 1) SOP ----------------
 say "1/4 Validando SOP…"
-if ! ./fabrica/validate_sop.sh >/dev/null 2>&1; then
-  fail "SOP inválido — execute './fabrica/validate_sop.sh' para detalhes."
+if ! ./ordem/validate_sop.sh >/dev/null 2>&1; then
+  fail "SOP inválido — execute './ordem/validate_sop.sh' para detalhes."
   exit 2
 fi
 ok "SOP válido"
 
 # ---------------- 2) Relatório ----------------
 say "2/4 Verificando relatorio.md…"
-REL="fabrica/relatorio.md"
+REL="ordem/relatorio.md"
 [ -f "$REL" ] || { fail "Falta $REL"; exit 3; }
 
 need_blocks=("PLAN" "PATCH" "TESTS" "SELF-CHECK")
@@ -95,8 +95,8 @@ fi
 if [ $gk_ran -eq 0 ]; then
   if [ $REQUIRE_GK -eq 1 ]; then
     if [ $RUN_GK_WHEN_READY -eq 1 ]; then
-      warn "Gatekeeper ainda não correu — a executar './fabrica/gatekeeper.sh'…"
-      if ./fabrica/gatekeeper.sh; then
+      warn "Gatekeeper ainda não correu — a executar './ordem/gatekeeper.sh'…"
+      if ./ordem/gatekeeper.sh; then
         gk_ran=1; gk_pass=1
       else
         gk_ran=1; gk_pass=0
@@ -106,7 +106,7 @@ if [ $gk_ran -eq 0 ]; then
 fi
 
 if [ $gk_ran -eq 0 ]; then
-  warn "🟡 PRONTO PARA GATEKEEPER — execute './fabrica/gatekeeper.sh'."
+  warn "🟡 PRONTO PARA GATEKEEPER — execute './ordem/gatekeeper.sh'."
   exit 10
 fi
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Uso: ./fabrica/make_stage.sh Mxx Eyy <slug>
+# Uso: ./ordem/make_stage.sh Mxx Eyy <slug>
 if [ $# -ne 3 ]; then echo "Uso: $0 Mxx Eyy <slug>"; exit 1; fi
 M="$1"; E="$2"; SLUG="$3"
 [[ "$M" =~ ^M[0-9]{2}$ ]] || { echo "Capítulo inválido (ex.: M01)"; exit 1; }

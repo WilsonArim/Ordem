@@ -9,7 +9,7 @@
 | `gatekeeper:eslint`    | `npx eslint .`                                             | ⚠️ Parcial   | Funciona mas não encontra ficheiros JS/TS |
 | `gatekeeper:prettier`  | `npx prettier -c .`                                        | ✅ Funcional | Detecta problemas de formatação           |
 | `gatekeeper:semgrep`   | `semgrep --config auto`                                    | ✅ Funcional | Scan de segurança completo                |
-| `gatekeeper:gitleaks`  | `gitleaks detect --no-git -c fabrica/.gitleaks.toml`       | ✅ Funcional | Detecta segredos (282 encontrados)        |
+| `gatekeeper:gitleaks`  | `gitleaks detect --no-git -c ordem/.gitleaks.toml`       | ✅ Funcional | Detecta segredos (282 encontrados)        |
 | `gatekeeper:npm-audit` | `npm audit --audit-level=high`                             | ✅ Funcional | 0 vulnerabilidades encontradas            |
 | `gatekeeper:pip-audit` | `~/.local/bin/pip-audit -r requirements.txt`               | ✅ Funcional | 0 vulnerabilidades encontradas            |
 | `gatekeeper:sentry`    | `grep -Riq 'sentry' . && grep -q 'SENTRY_DSN' env.example` | ✅ Funcional | Verifica configuração Sentry              |
@@ -37,7 +37,7 @@ npm run gatekeeper:sentry      # Verificar Sentry
 #### Script Principal (Gatekeeper)
 
 ```bash
-./fabrica/gatekeeper.sh        # Executa todos os 7 testes sequencialmente
+./ordem/gatekeeper.sh        # Executa todos os 7 testes sequencialmente
 ```
 
 ### Interação entre Scripts
@@ -71,14 +71,14 @@ Criar estrutura `/treino_torre` para automatizar a criação de aulas a partir d
 | `/treino_torre/README.md`        | Instruções de uso        | ✅ Criado           |
 | `/treino_torre/AULA_TEMPLATE.md` | Template com frontmatter | ✅ Criado           |
 | `/treino_torre/TOC.md`           | Índice de aulas          | ✅ Criado           |
-| `/fabrica/make_aula.sh`          | Script gerador de aulas  | ✅ Criado e testado |
+| `/ordem/make_aula.sh`          | Script gerador de aulas  | ✅ Criado e testado |
 
 ### Scripts e Funcionalidades
 
 #### make_aula.sh
 
-- **Uso**: `./fabrica/make_aula.sh <ID> <CAPITULO> <ETAPA> <TAREFA> <SLUG> <TAGS>`
-- **Exemplo**: `./fabrica/make_aula.sh 2025-09-29-001 M01 E01 T001 micro-gama-jwt "jwt,rbac,fastapi"`
+- **Uso**: `./ordem/make_aula.sh <ID> <CAPITULO> <ETAPA> <TAREFA> <SLUG> <TAGS>`
+- **Exemplo**: `./ordem/make_aula.sh 2025-09-29-001 M01 E01 T001 micro-gama-jwt "jwt,rbac,fastapi"`
 - **Resultado**: Gera ficheiro `/treino_torre/2025-09-29-001-micro-gama-jwt.md`
 
 #### Frontmatter Validado
@@ -214,7 +214,7 @@ estado_final: DONE
 
 ### TESTS
 
-**Output da execução `./fabrica/validate_sop.sh`:**
+**Output da execução `./ordem/validate_sop.sh`:**
 
 ```
 🔍 Auditoria SOP iniciada...
@@ -253,17 +253,17 @@ estado_final: DONE
 ### PLAN
 **Passos e decisões executados:**
 1. **Git Hygiene**: Criado `.gitignore` com entradas para Node.js, Python, macOS e ficheiros sensíveis
-2. **Pre-commit Hook**: Criado `fabrica/hooks/pre-commit.sh` que executa validações antes de cada commit
+2. **Pre-commit Hook**: Criado `ordem/hooks/pre-commit.sh` que executa validações antes de cada commit
 3. **GitHub Actions CI**: Criado workflow que valida SOP e Gatekeeper em push/PR
-4. **Documentação**: Atualizado `fabrica/README.md` com instruções de proteção de branch
+4. **Documentação**: Atualizado `ordem/README.md` com instruções de proteção de branch
 5. **Versões**: Node 18+, Python 3.9+, ESLint condicional (só se houver JS/TS)
 
 ### PATCH
 **Novos ficheiros criados:**
 - **`.gitignore`** - Entradas para Node.js, Python, macOS, ficheiros sensíveis
-- **`fabrica/hooks/pre-commit.sh`** - Hook que executa validações antes de cada commit
+- **`ordem/hooks/pre-commit.sh`** - Hook que executa validações antes de cada commit
 - **`.github/workflows/fabrica-ci.yml`** - Workflow CI/CD para GitHub Actions
-- **`fabrica/README.md`** - Documentação completa com instruções
+- **`ordem/README.md`** - Documentação completa com instruções
 
 **Updates:**
 - Pre-commit hook instalado em `.git/hooks/pre-commit`
@@ -293,9 +293,9 @@ All matched files use Prettier code style!
 ### SELF-CHECK
 **Critérios confirmados:**
 - [x] **`.gitignore` criado com entradas mínimas**
-- [x] **`fabrica/hooks/pre-commit.sh` criado e instalado (documentação clara)**
+- [x] **`ordem/hooks/pre-commit.sh` criado e instalado (documentação clara)**
 - [x] **`.github/workflows/fabrica-ci.yml` criado e funcional (CI a verde neste repo)**
-- [x] **`fabrica/README.md` atualizado com instruções de proteção de branch**
+- [x] **`ordem/README.md` atualizado com instruções de proteção de branch**
 - [x] **Commits seguem convenção `[ORD-YYYY-MM-DD-XXX] ...`** (próximo commit seguirá)
 - [x] **Testes/linters passam onde aplicável**
 - [x] **RELATORIO.MD ATUALIZADO**
@@ -318,21 +318,21 @@ All matched files use Prettier code style!
 
 ### PLAN
 **Passos/ficheiros tocados:**
-1. **Atualizar `fabrica/ORDER_TEMPLATE.md`**: Adicionar secção "GIT / CONTROLO DE VERSÃO" e revisar ciclo de responsabilidades
-2. **Criar `fabrica/SOP.md`**: Documentar fluxo de linha de montagem inviolável com cláusulas de ferro
-3. **Atualizar `fabrica/validate_sop.sh`**: Verificar presença das novas cláusulas Git
-4. **Atualizar `fabrica/README.md`**: Explicar quando fazer Git e convenção de commit
+1. **Atualizar `ordem/ORDER_TEMPLATE.md`**: Adicionar secção "GIT / CONTROLO DE VERSÃO" e revisar ciclo de responsabilidades
+2. **Criar `ordem/SOP.md`**: Documentar fluxo de linha de montagem inviolável com cláusulas de ferro
+3. **Atualizar `ordem/validate_sop.sh`**: Verificar presença das novas cláusulas Git
+4. **Atualizar `ordem/README.md`**: Explicar quando fazer Git e convenção de commit
 5. **Testar validador**: Confirmar que corre a verde
 
 ### PATCH
 **Ficheiros alterados/criados:**
-1. **`fabrica/ORDER_TEMPLATE.md`** - Adicionada secção "GIT / CONTROLO DE VERSÃO" e revisado ciclo de responsabilidades
-2. **`fabrica/SOP.md`** - Criado com fluxo de linha de montagem inviolável e cláusulas de ferro
-3. **`fabrica/validate_sop.sh`** - Adicionadas validações para novas cláusulas Git
-4. **`fabrica/README.md`** - Adicionada secção "Quando Executar Git" com sequência obrigatória
+1. **`ordem/ORDER_TEMPLATE.md`** - Adicionada secção "GIT / CONTROLO DE VERSÃO" e revisado ciclo de responsabilidades
+2. **`ordem/SOP.md`** - Criado com fluxo de linha de montagem inviolável e cláusulas de ferro
+3. **`ordem/validate_sop.sh`** - Adicionadas validações para novas cláusulas Git
+4. **`ordem/README.md`** - Adicionada secção "Quando Executar Git" com sequência obrigatória
 
 ### TESTS
-**Execução do `./fabrica/validate_sop.sh` a verde:**
+**Execução do `./ordem/validate_sop.sh` a verde:**
 ```
 🔍 Auditoria SOP iniciada...
 ✅ SOP válido: todas as verificações passaram.
@@ -340,10 +340,10 @@ All matched files use Prettier code style!
 
 ### SELF-CHECK
 **Critérios confirmados:**
-- [x] **`fabrica/ORDER_TEMPLATE.md` atualizado com GIT / CONTROLO DE VERSÃO e ciclo revisado**
-- [x] **`fabrica/SOP.md` contém Fluxo de Linha de Montagem (Inviolável) com a sequência completa e cláusulas de ferro**
-- [x] **`fabrica/validate_sop.sh` verifica a presença das novas cláusulas em TEMPLATE e SOP (sem afrouxar regras existentes)**
-- [x] **`fabrica/README.md` explica quando fazer Git e a convenção de commit**
+- [x] **`ordem/ORDER_TEMPLATE.md` atualizado com GIT / CONTROLO DE VERSÃO e ciclo revisado**
+- [x] **`ordem/SOP.md` contém Fluxo de Linha de Montagem (Inviolável) com a sequência completa e cláusulas de ferro**
+- [x] **`ordem/validate_sop.sh` verifica a presença das novas cláusulas em TEMPLATE e SOP (sem afrouxar regras existentes)**
+- [x] **`ordem/README.md` explica quando fazer Git e a convenção de commit**
 - [x] **Validador corre a verde no estado atual do repo**
 - [x] **RELATORIO.MD ATUALIZADO**
 
@@ -366,21 +366,21 @@ All matched files use Prettier code style!
 
 ### PLAN
 **Passos e decisões:**
-1. **Atualizar `fabrica/SOP.md`**: Adicionar papéis (Comandante, Estado-Maior, Codex, Engenheiro, Operador) e regra do delegado Codex
-2. **Criar `fabrica/verifica_luz_verde.sh`**: Script inspetor com regras de validação e códigos de saída específicos
-3. **Criar `fabrica/CODEX_ONBOARDING.md`**: Manual de bolso com instruções operacionais para o Codex
+1. **Atualizar `ordem/SOP.md`**: Adicionar papéis (Comandante, Estado-Maior, Codex, Engenheiro, Operador) e regra do delegado Codex
+2. **Criar `ordem/verifica_luz_verde.sh`**: Script inspetor com regras de validação e códigos de saída específicos
+3. **Criar `ordem/CODEX_ONBOARDING.md`**: Manual de bolso com instruções operacionais para o Codex
 4. **Criar `.vscode/tasks.json`**: 3 tasks para validação SOP, Gatekeeper e verificação de luz verde
-5. **Atualizar `fabrica/README.md`**: Secção sobre como o Codex gere o dia-a-dia
-6. **Atualizar `fabrica/validate_sop.sh`**: Verificar presença dos novos artefatos
+5. **Atualizar `ordem/README.md`**: Secção sobre como o Codex gere o dia-a-dia
+6. **Atualizar `ordem/validate_sop.sh`**: Verificar presença dos novos artefatos
 
 ### PATCH
 **Ficheiros alterados/criados:**
-1. **`fabrica/SOP.md`** - Atualizado com papéis (Comandante, Estado-Maior, Codex, Engenheiro, Operador) e regra do delegado Codex
-2. **`fabrica/verifica_luz_verde.sh`** - Script inspetor com regras de validação e códigos de saída específicos (0=VERDE, 10=PRONTO PARA GATEKEEPER, 1=BLOQUEADO)
-3. **`fabrica/CODEX_ONBOARDING.md`** - Manual de bolso com instruções operacionais para o Codex
+1. **`ordem/SOP.md`** - Atualizado com papéis (Comandante, Estado-Maior, Codex, Engenheiro, Operador) e regra do delegado Codex
+2. **`ordem/verifica_luz_verde.sh`** - Script inspetor com regras de validação e códigos de saída específicos (0=VERDE, 10=PRONTO PARA GATEKEEPER, 1=BLOQUEADO)
+3. **`ordem/CODEX_ONBOARDING.md`** - Manual de bolso com instruções operacionais para o Codex
 4. **`.vscode/tasks.json`** - 3 tasks para validação SOP, Gatekeeper e verificação de luz verde
-5. **`fabrica/README.md`** - Secção "Como o Codex gere o dia-a-dia" com comandos essenciais
-6. **`fabrica/validate_sop.sh`** - Adicionadas validações para novos artefatos Codex
+5. **`ordem/README.md`** - Secção "Como o Codex gere o dia-a-dia" com comandos essenciais
+6. **`ordem/validate_sop.sh`** - Adicionadas validações para novos artefatos Codex
 
 ### TESTS
 **Logs dos scripts:**
@@ -434,16 +434,16 @@ Pronto para Git!
 
 ### PLAN
 **Passos executados:**
-1. **Substituir `fabrica/verifica_luz_verde.sh`** pelo BLOCO A com melhorias de robustez
-2. **Substituir `fabrica/validate_sop.sh`** pelo BLOCO B com melhorias de robustez  
+1. **Substituir `ordem/verifica_luz_verde.sh`** pelo BLOCO A com melhorias de robustez
+2. **Substituir `ordem/validate_sop.sh`** pelo BLOCO B com melhorias de robustez  
 3. **Tornar ambos executáveis** com `chmod +x`
 4. **Testar scripts** com saídas esperadas
 5. **Atualizar relatório** com documentação completa
 
 ### PATCH
 **Ficheiros substituídos:**
-1. **`fabrica/verifica_luz_verde.sh`** - Substituído pelo BLOCO A com melhorias de robustez (paths, regex, mensagens, saídas)
-2. **`fabrica/validate_sop.sh`** - Substituído pelo BLOCO B com melhorias de robustez (paths, regex, mensagens, saídas)
+1. **`ordem/verifica_luz_verde.sh`** - Substituído pelo BLOCO A com melhorias de robustez (paths, regex, mensagens, saídas)
+2. **`ordem/validate_sop.sh`** - Substituído pelo BLOCO B com melhorias de robustez (paths, regex, mensagens, saídas)
 
 **Ambos scripts tornados executáveis** com `chmod +x`
 
@@ -480,8 +480,8 @@ Pronto para Git!
 ### SELF-CHECK
 **Critérios confirmados:**
 - [x] **Scripts substituídos e com chmod +x**
-- [x] **./fabrica/validate_sop.sh → sucesso (exit 0)**
-- [x] **./fabrica/verifica_luz_verde.sh → retorna 0 (VERDE) conforme estado do Gatekeeper**
+- [x] **./ordem/validate_sop.sh → sucesso (exit 0)**
+- [x] **./ordem/verifica_luz_verde.sh → retorna 0 (VERDE) conforme estado do Gatekeeper**
 - [x] **Mensagens claras e saídas mapeadas (0/10/1..7)**
 - [x] **RELATORIO.MD ATUALIZADO**
 
@@ -515,8 +515,8 @@ Pronto para Git!
 1. **`pipeline/modulos/M02-autenticacao/M02.md`** - Linha 1: `ID: 2025-09-30-143` → `ID: M02`
 2. **`pipeline/modulos/M02-autenticacao/etapas/E01-base-tokens/E01.md`** - Linha 1: `ID: 2025-09-30-381` → `ID: E01`
 3. **`pipeline/modulos/M02-autenticacao/etapas/E01-base-tokens/tarefas/T001-endpoint-login/T001.md`** - Linha 1: `ID: 2025-09-30-113` → `ID: T001`
-4. **`fabrica/ORDER_TEMPLATE.md`** - Linhas 7, 11, 15, 16, 17: Checklists corrigidas de `- [...]` para `- [ ]`
-5. **`fabrica/SOP.md`** - Linha 1: Título simplificado para `# SOP`
+4. **`ordem/ORDER_TEMPLATE.md`** - Linhas 7, 11, 15, 16, 17: Checklists corrigidas de `- [...]` para `- [ ]`
+5. **`ordem/SOP.md`** - Linha 1: Título simplificado para `# SOP`
 
 ### TESTS
 **Saída do validador:**
@@ -537,7 +537,7 @@ Pronto para Git!
 - [x] **IDs corrigidos (M02/E01/T001)**
 - [x] **Checklists do ORDER_TEMPLATE no formato `- [ ] …`**
 - [x] **`SOP.md` com título `# SOP`**
-- [x] **`./fabrica/validate_sop.sh` a verde (exit 0)**
+- [x] **`./ordem/validate_sop.sh` a verde (exit 0)**
 - [x] **RELATORIO.MD ATUALIZADO**
 
 ### Estado Final
@@ -555,24 +555,24 @@ Pronto para Git!
 ## ORDEM 2025-09-30-013 — Blindar Fábrica (Hook + Validação + Manual)
 
 ### PLAN
-1. Criar `fabrica/hooks/pre-commit.sh` com BLOCO A (atualiza TOC e valida SOP)
-2. Atualizar `fabrica/validate_sop.sh` com BLOCO B (validação critérios ≥ 2 em TASKS)
-3. Criar `fabrica/MANUAL.md` com BLOCO C (documentação completa)
+1. Criar `ordem/hooks/pre-commit.sh` com BLOCO A (atualiza TOC e valida SOP)
+2. Atualizar `ordem/validate_sop.sh` com BLOCO B (validação critérios ≥ 2 em TASKS)
+3. Criar `ordem/MANUAL.md` com BLOCO C (documentação completa)
 4. Tornar pre-commit.sh executável e instalar em `.git/hooks/pre-commit`
 5. Testar scripts e validar SOP
 
 ### PATCH
-- **fabrica/hooks/pre-commit.sh**: Criado com lógica para atualizar TOC e validar SOP antes do commit
-- **fabrica/validate_sop.sh**: Adicionada secção 6b para validar que TASKS têm ≥ 2 critérios
-- **fabrica/MANUAL.md**: Criado com documentação completa dos papéis, fluxo e comandos
+- **ordem/hooks/pre-commit.sh**: Criado com lógica para atualizar TOC e validar SOP antes do commit
+- **ordem/validate_sop.sh**: Adicionada secção 6b para validar que TASKS têm ≥ 2 critérios
+- **ordem/MANUAL.md**: Criado com documentação completa dos papéis, fluxo e comandos
 - **.git/hooks/pre-commit**: Instalado hook pre-commit
 
 ### TESTS
 ```bash
-$ ./fabrica/update_pipeline_toc.sh
+$ ./ordem/update_pipeline_toc.sh
 TOC atualizado em /Users/wilsonarim/Documents/CURSOR LOCAL/FÁBRICA/pipeline/PIPELINE_TOC.md
 
-$ ./fabrica/validate_sop.sh
+$ ./ordem/validate_sop.sh
 🔍 Auditoria SOP iniciada…
 ✅ ORDER_TEMPLATE.md — cláusulas de ferro presentes
 ✅ CLAUDE_QUEUE.md — formato de ordem válido
@@ -617,10 +617,10 @@ $ ./fabrica/validate_sop.sh
 
 **RESULTADO**:
 ```bash
-$ ./fabrica/validate_sop.sh
+$ ./ordem/validate_sop.sh
 ✅ SOP válido: todas as verificações passaram.
 
-$ ./fabrica/verifica_luz_verde.sh
+$ ./ordem/verifica_luz_verde.sh
 🟢 VERDE — Tudo validado: SOP ✓, Relatório ✓, Gatekeeper 7/7 ✓. Pronto para Git.
 ```
 
@@ -638,21 +638,21 @@ $ ./fabrica/verifica_luz_verde.sh
 ## ORDEM 2025-09-30-014 — Empacotar Fábrica v1.0.0 para Distribuição
 
 ### PLAN
-1. Criar estrutura `fabrica/DISTRIBUICAO/`
+1. Criar estrutura `ordem/DISTRIBUICAO/`
 2. Criar `INSTRUCOES_INTEGRACAO.md` com passos de integração
-3. Atualizar `fabrica/CODEX_ONBOARDING.md` para novos repositórios
+3. Atualizar `ordem/CODEX_ONBOARDING.md` para novos repositórios
 4. Criar `Fabrica-Pacote.zip` com todos os ficheiros essenciais
 5. Teste de integração em `/tmp/fabrica-test`
 6. Atualizar relatório
 
 ### PATCH
 **Ficheiros criados:**
-- `fabrica/DISTRIBUICAO/INSTRUCOES_INTEGRACAO.md` - Instruções completas de integração
-- `fabrica/DISTRIBUICAO/Fabrica-Pacote.zip` - Pacote com 45 ficheiros (fabrica/, pipeline/, .vscode/)
-- `fabrica/CODEX_ONBOARDING.md` - Atualizado com secção "Localização dos Artefactos"
+- `ordem/DISTRIBUICAO/INSTRUCOES_INTEGRACAO.md` - Instruções completas de integração
+- `ordem/DISTRIBUICAO/Fabrica-Pacote.zip` - Pacote com 45 ficheiros (ordem/, pipeline/, .vscode/)
+- `ordem/CODEX_ONBOARDING.md` - Atualizado com secção "Localização dos Artefactos"
 
 **Conteúdo do pacote:**
-- `fabrica/` - 8 scripts (.sh) + 7 documentos (.md) + hooks/ + .gitleaks.toml
+- `ordem/` - 8 scripts (.sh) + 7 documentos (.md) + hooks/ + .gitleaks.toml
 - `pipeline/` - Templates + exemplo M01/M02 completo
 - `.vscode/tasks.json` - 4 tasks (SOP, Gatekeeper, Inspetor, TOC)
 
@@ -665,21 +665,21 @@ $ git init
 Initialized empty Git repository
 
 $ unzip Fabrica-Pacote.zip
-$ chmod +x fabrica/*.sh
-$ cp fabrica/hooks/pre-commit.sh .git/hooks/pre-commit
+$ chmod +x ordem/*.sh
+$ cp ordem/hooks/pre-commit.sh .git/hooks/pre-commit
 
-$ ./fabrica/validate_sop.sh
+$ ./ordem/validate_sop.sh
 ✅ SOP válido: todas as verificações passaram.
 
-$ ./fabrica/verifica_luz_verde.sh
-🟡 PRONTO PARA GATEKEEPER — execute './fabrica/gatekeeper.sh'.
+$ ./ordem/verifica_luz_verde.sh
+🟡 PRONTO PARA GATEKEEPER — execute './ordem/gatekeeper.sh'.
 Exit code: 10
 ```
 
 **Estrutura verificada:**
 ```
 fabrica-test/
-├── fabrica/        (21 items)
+├── ordem/        (21 items)
 ├── pipeline/       (6 items)
 ├── .vscode/        (1 item)
 ├── requirements.txt
@@ -690,8 +690,8 @@ fabrica-test/
 - [x] `DISTRIBUICAO/` criado com `Fabrica-Pacote.zip` e `INSTRUCOES_INTEGRACAO.md`
 - [x] `CODEX_ONBOARDING.md` voltado ao Codex (IDE) concluído
 - [x] Teste de integração executado, com saída registada no `relatorio.md`
-- [x] `./fabrica/validate_sop.sh` a verde no repo de teste
-- [x] `./fabrica/verifica_luz_verde.sh` funcional no repo de teste (exit 10 - PRONTO PARA GATEKEEPER)
+- [x] `./ordem/validate_sop.sh` a verde no repo de teste
+- [x] `./ordem/verifica_luz_verde.sh` funcional no repo de teste (exit 10 - PRONTO PARA GATEKEEPER)
 - [x] **RELATORIO.MD ATUALIZADO**
 
 ### Estado Final

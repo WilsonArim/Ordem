@@ -23,40 +23,40 @@ line_has_code_id(){
 }
 
 # -------- 0) Existência mínima --------
-[ -f "fabrica/ORDER_TEMPLATE.md" ] || fail "Falta fabrica/ORDER_TEMPLATE.md"
-[ -f "fabrica/CLAUDE_QUEUE.md" ]   || fail "Falta fabrica/CLAUDE_QUEUE.md"
-[ -f "fabrica/relatorio.md" ]      || fail "Falta fabrica/relatorio.md"
+[ -f "ordem/ORDER_TEMPLATE.md" ] || fail "Falta ordem/ORDER_TEMPLATE.md"
+[ -f "ordem/CLAUDE_QUEUE.md" ]   || fail "Falta ordem/CLAUDE_QUEUE.md"
+[ -f "ordem/relatorio.md" ]      || fail "Falta ordem/relatorio.md"
 
 # -------- 1) ORDER_TEMPLATE: cláusulas de ferro --------
-if [ -f "fabrica/ORDER_TEMPLATE.md" ]; then
-  has_line_ci "fabrica/ORDER_TEMPLATE.md" "RELATORIO\.MD ATUALIZADO" \
+if [ -f "ordem/ORDER_TEMPLATE.md" ]; then
+  has_line_ci "ordem/ORDER_TEMPLATE.md" "RELATORIO\.MD ATUALIZADO" \
     || fail "ORDER_TEMPLATE.md sem cláusula 'RELATORIO.MD ATUALIZADO'."
-  has_line_ci "fabrica/ORDER_TEMPLATE.md" "^##[[:space:]]*CICLO DE RESPONSABILIDADES" \
+  has_line_ci "ordem/ORDER_TEMPLATE.md" "^##[[:space:]]*CICLO DE RESPONSABILIDADES" \
     || fail "ORDER_TEMPLATE.md sem secção 'CICLO DE RESPONSABILIDADES'."
 
   # Secção Git / Controlo de Versão (se existir)
-  if has_line_ci "fabrica/ORDER_TEMPLATE.md" "GIT[[:space:]]*/[[:space:]]*CONTROLO DE VERS(Ã|A)O"; then
-    has_line_ci "fabrica/ORDER_TEMPLATE.md" "Só executar Git após 7/7 PASSOU" \
+  if has_line_ci "ordem/ORDER_TEMPLATE.md" "GIT[[:space:]]*/[[:space:]]*CONTROLO DE VERS(Ã|A)O"; then
+    has_line_ci "ordem/ORDER_TEMPLATE.md" "Só executar Git após 7/7 PASSOU" \
       || fail "ORDER_TEMPLATE.md: bloco Git sem a regra 'Só executar Git após 7/7 PASSOU'."
     # Aceitar placeholder, real ou genérico
-    has_line_ci "fabrica/ORDER_TEMPLATE.md" "\\[ORD-(YYYY-MM-DD-XXX|[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{3}|ID)\\]" \
+    has_line_ci "ordem/ORDER_TEMPLATE.md" "\\[ORD-(YYYY-MM-DD-XXX|[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{3}|ID)\\]" \
       || fail "ORDER_TEMPLATE.md: bloco Git sem padrão de commit '[ORD-YYYY-MM-DD-XXX]' (ou equivalente)."
   fi
   ok "ORDER_TEMPLATE.md — cláusulas de ferro presentes"
 fi
 
 # -------- 2) CLAUDE_QUEUE.md (se tiver ordem) --------
-if [ -s "fabrica/CLAUDE_QUEUE.md" ] && grep -q "^ID:\s" "fabrica/CLAUDE_QUEUE.md"; then
-  has_line_ci "fabrica/CLAUDE_QUEUE.md" "RELATORIO\.MD ATUALIZADO" \
+if [ -s "ordem/CLAUDE_QUEUE.md" ] && grep -q "^ID:\s" "ordem/CLAUDE_QUEUE.md"; then
+  has_line_ci "ordem/CLAUDE_QUEUE.md" "RELATORIO\.MD ATUALIZADO" \
     || fail "CLAUDE_QUEUE.md sem 'RELATORIO.MD ATUALIZADO'."
-  has_line_ci "fabrica/CLAUDE_QUEUE.md" "^##[[:space:]]*CICLO DE RESPONSABILIDADES" \
+  has_line_ci "ordem/CLAUDE_QUEUE.md" "^##[[:space:]]*CICLO DE RESPONSABILIDADES" \
     || fail "CLAUDE_QUEUE.md sem 'CICLO DE RESPONSABILIDADES'."
   ok "CLAUDE_QUEUE.md — formato de ordem válido"
 fi
 
 # -------- 3) IDs válidos --------
 # Regras:
-# - Em fabrica/ e treino_torre/: ID deve ser data (ORD-id ou aulas).
+# - Em ordem/ e treino_torre/: ID deve ser data (ORD-id ou aulas).
 # - Em pipeline/: ID deve bater com o código do ficheiro (Mxx/Eyy/Tzzz).
 while IFS= read -r -d '' f; do
   case "$f" in
@@ -81,7 +81,7 @@ while IFS= read -r -d '' f; do
         fi
         ;;
       *)
-        # fabrica/ e treino_torre/
+        # ordem/ e treino_torre/
         line_has_date_id "$line" || fail "ID inválido em '$f': $line"
         ;;
     esac
@@ -154,18 +154,18 @@ if [ -d "pipeline" ]; then
   ok "Pipeline — todas as TASKs com >= 2 critérios"
 fi
 # -------- 7) SOP.md (validar só se existir) --------
-if [ -f "fabrica/SOP.md" ]; then
-  has_line_ci "fabrica/SOP.md" "^#\s*SOP\b" || fail "SOP.md sem título 'SOP'."
-  has_line_ci "fabrica/SOP.md" "Fluxo de Linha de Montagem.*Inviol(á|a)vel" \
+if [ -f "ordem/SOP.md" ]; then
+  has_line_ci "ordem/SOP.md" "^#\s*SOP\b" || fail "SOP.md sem título 'SOP'."
+  has_line_ci "ordem/SOP.md" "Fluxo de Linha de Montagem.*Inviol(á|a)vel" \
     || fail "SOP.md sem secção 'Fluxo de Linha de Montagem (Inviolável)'."
-  has_line_ci "fabrica/SOP.md" "Comandante|Estado-Maior|Codex|Engenheiro|Operador" \
+  has_line_ci "ordem/SOP.md" "Comandante|Estado-Maior|Codex|Engenheiro|Operador" \
     || fail "SOP.md sem definição de papéis."
   ok "SOP.md — seções essenciais presentes"
 fi
 
 # -------- 8) Kit Codex (opcional) --------
-[ -f "fabrica/verifica_luz_verde.sh" ] && [ -x "fabrica/verifica_luz_verde.sh" ] && ok "Inspetor presente (executável)" || true
-[ -f "fabrica/CODEX_ONBOARDING.md" ] && ok "CODEX_ONBOARDING.md presente" || true
+[ -f "ordem/verifica_luz_verde.sh" ] && [ -x "ordem/verifica_luz_verde.sh" ] && ok "Inspetor presente (executável)" || true
+[ -f "ordem/CODEX_ONBOARDING.md" ] && ok "CODEX_ONBOARDING.md presente" || true
 [ -f ".vscode/tasks.json" ] && ok "VSCode tasks presentes" || true
 
 # -------- Resultado --------
