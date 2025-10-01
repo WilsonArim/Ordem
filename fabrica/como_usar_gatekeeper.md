@@ -18,7 +18,8 @@
    npm run gatekeeper:sentry
 
 ## Após 7/7 PASSOU:
-1) O Estado-Maior marca DONE no diário.
-2) Executar:
+
+1. O Estado-Maior marca DONE no diário.
+2. Executar:
    ./fabrica/make_aula.sh <ID> <Mxx> <Eyy> <Tzzz> <slug> "<tags>"
-3) Inserir o link da aula no /treino_torre/TOC.md e no diário.
+3. Inserir o link da aula no /treino_torre/TOC.md e no diário.
