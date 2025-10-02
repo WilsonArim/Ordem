@@ -28,14 +28,14 @@ git push origin --tags
 - `.github/` → CI da Ordem
 
 ## 5. Fluxo de Trabalho
-1. **Executar ordem** → atualizar `ordem/relatorio.md`
+1. **Executar ordem** → atualizar `ordem/codex_claude/relatorio.md`
 2. **Verificar luz verde** → `./ordem/verifica_luz_verde.sh`
 3. **Se 🟡 PRONTO PARA GATEKEEPER** → `./ordem/gatekeeper.sh`
 4. **Se 🟢 VERDE** → executar Git com convenção `[ORD-...]`
 
 ## 6. Convenções
 - **Commits**: sempre `[ORD-YYYY-MM-DD-XXX] <resumo>`
-- **Relatórios**: sempre atualizar `ordem/relatorio.md` com PLAN, PATCH, TESTS, SELF-CHECK
+- **Relatórios**: sempre atualizar `ordem/codex_claude/relatorio.md` com PLAN, PATCH, TESTS, SELF-CHECK
 - **Pipeline**: usar geradores `make_chapter.sh`, `make_stage.sh`, `make_task.sh`
 
 ## 7. Troubleshooting
@@ -55,3 +55,26 @@ npm run gatekeeper:gitleaks   # Detecta segredos
 npm run gatekeeper:npm-audit  # Vulnerabilidades npm
 npm run gatekeeper:pip-audit  # Vulnerabilidades Python
 npm run gatekeeper:sentry     # Verifica configuração Sentry
+```
+
+## 9. 👁️ Gatekeeper Avançado (vigia contínuo)
+
+- O Gatekeeper Avançado é o vigia automático que corre SEMPRE em loop.
+- Ele verifica a cada 60s se o projeto continua saudável.
+
+### Como iniciar
+```bash
+./ordem/gatekeeper_avancado/gatekeeper_avancado_loop.sh
+```
+
+### Como saber que está a correr
+- No terminal aparecem mensagens OK ✅ ou erros detectados.
+- Também grava logs em `ordem/gatekeeper_avancado/gatekeeper_avancado_logs/`.
+
+### Se detetar erros
+1. Ler o log → identificar problema.
+2. Corrigir o ficheiro afetado.
+3. O Gatekeeper Avançado reexecuta sozinho após 30s.
+
+### Como parar
+- Pressionar CTRL + C no terminal onde está a correr.

@@ -114,10 +114,10 @@ echo "SENTRY_DSN=your-sentry-dsn-here" > env.example
 ## 🧭 FLUXO DE TRABALHO
 
 ### Para o Codex (AI Assistant)
-1. **Ler onboarding**: `ordem/CODEX_ONBOARDING.md`
-2. **Ler SOP**: `ordem/SOP.md`
-3. **Receber ordem**: `ordem/CLAUDE_QUEUE.md`
-4. **Executar trabalho**: Aplicar patch, atualizar `ordem/relatorio.md`
+1. **Ler onboarding**: `ordem/Manuais/CODEX_ONBOARDING.md`
+2. **Ler SOP**: `ordem/Manuais/SOP.md`
+3. **Receber ordem**: `ordem/codex_claude/CLAUDE_QUEUE.md`
+4. **Executar trabalho**: Aplicar patch, atualizar `ordem/codex_claude/relatorio.md`
 5. **Verificar luz verde**: `./ordem/verifica_luz_verde.sh`
    - 🟡 Exit 10 → Avisar Operador para Gatekeeper
    - 🟢 Exit 0 → Avisar Operador para Git
@@ -208,8 +208,8 @@ npm run gatekeeper:semgrep
 ## 📚 DOCUMENTAÇÃO COMPLETA
 
 - **Manual da Fábrica**: `ordem/MANUAL.md`
-- **SOP**: `ordem/SOP.md`
-- **Onboarding Codex**: `ordem/CODEX_ONBOARDING.md`
+- **SOP**: `ordem/Manuais/SOP.md`
+- **Onboarding Codex**: `ordem/Manuais/CODEX_ONBOARDING.md`
 - **Como usar Gatekeeper**: `ordem/como_usar_gatekeeper.md`
 
 ---

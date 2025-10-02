@@ -18,15 +18,15 @@
 
 Quando integrado num novo repositório, encontra tudo em:
 
-- **SOP e Doutrina**: `ordem/SOP.md`
-- **Templates**: `ordem/ORDER_TEMPLATE.md`, `pipeline/_templates/`
+- **SOP e Doutrina**: `ordem/Manuais/SOP.md`
+- **Templates**: `ordem/Manuais/ORDER_TEMPLATE.md`, `pipeline/_templates/`
 - **Scripts**:
   - `ordem/validate_sop.sh` - Validador SOP
   - `ordem/verifica_luz_verde.sh` - Inspetor (luz verde)
   - `ordem/gatekeeper.sh` - Gatekeeper 7/7
   - `ordem/update_pipeline_toc.sh` - Atualizar TOC
 - **Documentação**: `ordem/MANUAL.md`, `ordem/como_usar_gatekeeper.md`
-- **Estado Atual**: `ordem/CLAUDE_QUEUE.md`, `ordem/relatorio.md`
+- **Estado Atual**: `ordem/codex_claude/CLAUDE_QUEUE.md`, `ordem/codex_claude/relatorio.md`
 - **Pipeline**: `pipeline/PIPELINE_TOC.md`, `pipeline/modulos/`
 
 ---
@@ -41,8 +41,8 @@ Antes de começar, leia:
 
 ### 2. Gerar Ordens
 Para criar uma nova ordem:
-1. Abra `ordem/CLAUDE_QUEUE.md`
-2. Siga o template em `ordem/ORDER_TEMPLATE.md`
+1. Abra `ordem/codex_claude/CLAUDE_QUEUE.md`
+2. Siga o template em `ordem/Manuais/ORDER_TEMPLATE.md`
 3. Preencha todos os campos obrigatórios
 4. Inclua sempre as cláusulas:
    - "RELATORIO.MD ATUALIZADO (PLAN, PATCH, TESTS, SELF-CHECK) — REGRA INVIOLÁVEL"
@@ -99,7 +99,7 @@ echo "Exit code: $?"
 
 Quando `verifica_luz_verde.sh` retorna BLOQUEADO:
 1. Copie a mensagem de erro
-2. Adicione ao `ordem/relatorio.md` na secção apropriada
+2. Adicione ao `ordem/codex_claude/relatorio.md` na secção apropriada
 3. Documente o motivo e a ação necessária
 4. Devolva ao Engenheiro (Claude)
 

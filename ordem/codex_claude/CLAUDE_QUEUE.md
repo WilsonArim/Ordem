@@ -18,7 +18,7 @@ DETALHES (PASSOS CONCRETOS):
 4) Executar:
    - `./ordem/update_pipeline_toc.sh` (uma vez)
    - `./ordem/validate_sop.sh` (deve sair 0)
-5) Atualizar `ordem/relatorio.md` (PLAN, PATCH, TESTS, SELF-CHECK).
+5) Atualizar `ordem/codex_claude/relatorio.md` (PLAN, PATCH, TESTS, SELF-CHECK).
 
 CRITÉRIOS (mensuráveis):
 - [ ] Hook criado, executável e instalado em `.git/hooks/pre-commit`
@@ -109,8 +109,8 @@ BLOCO C — ordem/MANUAL.md
 - **Operador (Tu)**: corre Gatekeeper e Git, quando autorizado.
 
 ## Linha de Montagem (Inviolável)
-1. **Ordem** (ORDER_TEMPLATE) → entra em `ordem/CLAUDE_QUEUE.md`.
-2. **Execução** (Claude) → aplica PATCH e **atualiza `ordem/relatorio.md`** (PLAN, PATCH, TESTS, SELF-CHECK).
+1. **Ordem** (ORDER_TEMPLATE) → entra em `ordem/codex_claude/CLAUDE_QUEUE.md`.
+2. **Execução** (Claude) → aplica PATCH e **atualiza `ordem/codex_claude/relatorio.md`** (PLAN, PATCH, TESTS, SELF-CHECK).
 3. **Inspeção** (Codex) → `./ordem/verifica_luz_verde.sh`
    - `🟡 PRONTO PARA GATEKEEPER` (exit 10) → Operador: `./ordem/gatekeeper.sh`
    - `🟢 VERDE` (exit 0) → Git permitido

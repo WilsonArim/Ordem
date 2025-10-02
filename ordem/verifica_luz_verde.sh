@@ -53,7 +53,7 @@ ok "SOP válido"
 
 # ---------------- 2) Relatório ----------------
 say "2/4 Verificando relatorio.md…"
-REL="ordem/relatorio.md"
+REL="ordem/codex_claude/relatorio.md"
 [ -f "$REL" ] || { fail "Falta $REL"; exit 3; }
 
 need_blocks=("PLAN" "PATCH" "TESTS" "SELF-CHECK")

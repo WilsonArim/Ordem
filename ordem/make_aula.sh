@@ -59,8 +59,8 @@ TODO
 \`\`\`
 
 ## 9) LINKS
-- Ordem: ordem/CLAUDE_QUEUE.md (ID ${ID})
-- Relatório: ordem/relatorio.md
+- Ordem: ordem/codex_claude/CLAUDE_QUEUE.md (ID ${ID})
+- Relatório: ordem/codex_claude/relatorio.md
 - Commit: TODO
 EOF
 

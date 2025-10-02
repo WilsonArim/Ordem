@@ -7,8 +7,8 @@
 - **Operador (Tu)**: corre Gatekeeper e Git, quando autorizado.
 
 ## Linha de Montagem (Inviolável)
-1. **Ordem** (ORDER_TEMPLATE) → entra em `ordem/CLAUDE_QUEUE.md`.
-2. **Execução** (Claude) → aplica PATCH e **atualiza `ordem/relatorio.md`** (PLAN, PATCH, TESTS, SELF-CHECK).
+1. **Ordem** (ORDER_TEMPLATE) → entra em `ordem/codex_claude/CLAUDE_QUEUE.md`.
+2. **Execução** (Claude) → aplica PATCH e **atualiza `ordem/codex_claude/relatorio.md`** (PLAN, PATCH, TESTS, SELF-CHECK).
 3. **Inspeção** (Codex) → `./ordem/verifica_luz_verde.sh`
    - `🟡 PRONTO PARA GATEKEEPER` (exit 10) → Operador: `./ordem/gatekeeper.sh`
    - `🟢 VERDE` (exit 0) → Git permitido
@@ -21,6 +21,12 @@
   - `./ordem/make_stage.sh   M01 E01 base-tokens`
   - `./ordem/make_task.sh    M01 E01 T001 endpoint-login`
 - Atualizar TOC: `./ordem/update_pipeline_toc.sh` (também automático no pre-commit).
+
+## Gatekeeper Avançado (Monitorização Contínua)
+- **Vigia automático**: `./ordem/gatekeeper_avancado/gatekeeper_avancado_loop.sh`
+- **Verifica a cada 60s**: Conectividade, recursos, integridade
+- **Logs automáticos**: `ordem/gatekeeper_avancado/gatekeeper_avancado_logs/`
+- **Paragem**: CTRL+C ou `rm .gatekeeper_avancado.lock`
 - **Regras**:
   - Em `pipeline/…/Mxx|Eyy|Tzzz.md`: `ID` é **código** (M/E/T), `STATUS` em {TODO, EM_PROGRESSO, EM_REVISAO, AGUARDA_GATEKEEPER, DONE}.
   - Em `ordem/` e `treino_torre/`: `ID` é **data** `YYYY-MM-DD-XXX`.

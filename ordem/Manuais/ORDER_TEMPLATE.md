@@ -58,7 +58,7 @@ CHECKLIST DO ENGENHEIRO:
 - [ ] **RELATORIO.MD ATUALIZADO**
 
 ⚠️ CLÁUSULA INVIOLÁVEL
-Sem o `ordem/relatorio.md` atualizado, **a ordem é inválida** e não avança.
+Sem o `ordem/codex_claude/relatorio.md` atualizado, **a ordem é inválida** e não avança.
 
 ---
 
