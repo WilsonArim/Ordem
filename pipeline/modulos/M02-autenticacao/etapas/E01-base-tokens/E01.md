@@ -8,10 +8,13 @@ DEPENDÊNCIAS: []
 LINKS: []
 
 ## DESCRIÇÃO
+
 Breve explicação do objetivo desta etapa.
 
 ## TAREFAS
+
 As tarefas desta etapa estarão listadas no TOC.
 
 ## NOTAS
+
 Observações relevantes (riscos locais, blockers).

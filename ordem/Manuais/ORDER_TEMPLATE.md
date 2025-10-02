@@ -38,9 +38,10 @@ HANDOFF (para Gatekeeper):
 
 ## GIT / CONTROLO DE VERSÃO
 
-**Regra**: *"Só executar Git após 7/7 PASSOU e autorização do Estado-Maior."*
+**Regra**: _"Só executar Git após 7/7 PASSOU e autorização do Estado-Maior."_
 
 **Comando modelo**:
+
 ```bash
 git add .
 git commit -m "[ORD-YYYY-MM-DD-XXX] <resumo>"

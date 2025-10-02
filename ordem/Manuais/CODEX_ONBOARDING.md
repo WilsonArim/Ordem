@@ -7,6 +7,7 @@
 **Codex é o Inspetor/Operador Diário** - delegado para luz verde mediante `verifica_luz_verde.sh`.
 
 ### Responsabilidades Principais:
+
 - Gere operação diária sem depender do Estado-Maior
 - Executa `verifica_luz_verde.sh` após cada ordem
 - Ordena Operador a correr Gatekeeper/Git conforme fluxo
@@ -34,13 +35,17 @@ Quando integrado num novo repositório, encontra tudo em:
 ## Instruções Operacionais
 
 ### 1. Leitura Obrigatória
+
 Antes de começar, leia:
+
 - `ordem/SOP.md` - Fluxo de linha de montagem e papéis
 - `ordem/ORDER_TEMPLATE.md` - Template para ordens
 - `pipeline/PIPELINE_TOC.md` - Estrutura de projetos
 
 ### 2. Gerar Ordens
+
 Para criar uma nova ordem:
+
 1. Abra `ordem/codex_claude/CLAUDE_QUEUE.md`
 2. Siga o template em `ordem/Manuais/ORDER_TEMPLATE.md`
 3. Preencha todos os campos obrigatórios
@@ -50,7 +55,9 @@ Para criar uma nova ordem:
    - Secção "GIT / CONTROLO DE VERSÃO"
 
 ### 3. Após Cada Ordem
+
 Sempre que uma ordem terminar:
+
 1. Execute: `./ordem/verifica_luz_verde.sh`
 2. Verifique o código de saída:
    - **Exit 0 (VERDE)**: Tudo OK, pode prosseguir
@@ -60,15 +67,18 @@ Sempre que uma ordem terminar:
 ### 4. Fluxo de Decisão
 
 #### Se `verifica_luz_verde.sh` retorna VERDE (exit 0):
+
 - **E Gatekeeper pendente**: Ordenar Operador a correr `./ordem/gatekeeper.sh`
 - **E Gatekeeper já passou**: Ordenar Operador a fazer Git com convenção `[ORD-YYYY-MM-DD-XXX]`
 
 #### Se `verifica_luz_verde.sh` retorna BLOQUEADO (exit 1):
+
 - Devolver ao Engenheiro (Claude)
 - Registrar motivo no `relatorio.md`
 - Não prosseguir até correção
 
 #### Se `verifica_luz_verde.sh` retorna PRONTO PARA GATEKEEPER (exit 10):
+
 - Ordenar Operador a executar `./ordem/gatekeeper.sh`
 - Aguardar resultado
 - Reexecutar `verifica_luz_verde.sh` após Gatekeeper
@@ -98,6 +108,7 @@ echo "Exit code: $?"
 ### 7. Registro de Bloqueios
 
 Quando `verifica_luz_verde.sh` retorna BLOQUEADO:
+
 1. Copie a mensagem de erro
 2. Adicione ao `ordem/codex_claude/relatorio.md` na secção apropriada
 3. Documente o motivo e a ação necessária
@@ -106,6 +117,7 @@ Quando `verifica_luz_verde.sh` retorna BLOQUEADO:
 ### 8. Convenção de Commit
 
 Sempre que ordenar Git, use:
+
 ```bash
 git add .
 git commit -m "[ORD-YYYY-MM-DD-XXX] <resumo>"
@@ -125,17 +137,20 @@ git push
 ### 10. Troubleshooting
 
 #### SOP inválido:
+
 ```bash
 ./ordem/validate_sop.sh
 # Corrigir problemas reportados
 ```
 
 #### Relatório incompleto:
+
 - Verificar blocos: PLAN, PATCH, TESTS, SELF-CHECK
 - Verificar critérios ticados
 - Completar informações em falta
 
 #### Gatekeeper falhou:
+
 - Verificar logs de erro
 - Corrigir problemas reportados
 - Reexecutar `./ordem/gatekeeper.sh`

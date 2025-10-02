@@ -3,7 +3,7 @@
 **ID**: 2025-10-02-021  
 **PRIORIDADE**: Alta  
 **STATUS**: ✅ CONCLUÍDO  
-**DATA**: 2025-01-02  
+**DATA**: 2025-01-02
 
 ---
 
@@ -20,18 +20,21 @@ Foi extraído com sucesso o sistema de segurança contínuo (Dobbie Sentinel) do
 #### 1. Componentes principais identificados:
 
 **A. Dobbie Sentinel (Backend)**
+
 - **Localização**: `viriato/packages/alvora/backend/app/utils/dobbie_sentinel.py`
 - **Função**: Sistema de monitorização contínua e auditoria preditiva
 - **Intervalo**: 60 segundos (normal) / 30 segundos (em caso de erro)
 - **Modo de execução**: Thread daemon no backend principal
 
 **B. Sentinel Service (Standalone)**
+
 - **Localização**: `viriato/packages/sentinel/src/app.py`
 - **Função**: Serviço FastAPI independente com motor de regras
 - **Porta**: 8087
 - **Modo de execução**: Servidor standalone com uvicorn
 
 **C. Script de ativação manual**
+
 - **Localização**: `viriato/packages/alvora/backend/run_sentinel.py`
 - **Função**: Execução manual do Dobbie Sentinel
 - **Comando**: `python run_sentinel.py`
@@ -64,11 +67,13 @@ Loop infinito:
 #### 4. Sistema de logs identificado:
 
 **A. Logs tradicionais**
+
 - **Ficheiro**: `logs/sentinel.log`
 - **Formato**: `[LEVEL] [TIMESTAMP] MESSAGE`
 - **Rotação**: Não implementada
 
 **B. Logs unificados**
+
 - **Ficheiro**: `logs/core_unified.jsonl`
 - **Formato**: JSON com timestamp, level, message, origin, details
 - **Limite**: 1000 entradas (FIFO)
@@ -76,6 +81,7 @@ Loop infinito:
 #### 5. Dependências identificadas:
 
 **Python:**
+
 - `sqlalchemy` - Acesso à base de dados
 - `fastapi` - API do serviço standalone
 - `uvicorn` - Servidor ASGI
@@ -83,6 +89,7 @@ Loop infinito:
 - `threading` - Execução em background
 
 **Sistema:**
+
 - Base de dados SQLite/PostgreSQL
 - Ficheiros de configuração do projeto
 - Permissões de escrita em diretório de logs
@@ -141,12 +148,14 @@ viriato/gatekeeper_avancado/
 ### ✅ Teste 1: Ciclo de sucesso
 
 **Comando executado:**
+
 ```bash
 cd viriato/gatekeeper_avancado
 ./gatekeeper_avancado_loop.sh
 ```
 
 **Resultado esperado:**
+
 ```
 [INFO] [2025-01-02 14:30:15] 🛡️ GATEKEEPER AVANÇADO INICIADO
 [INFO] [2025-01-02 14:30:15] 🔍 Monitorização contínua ativada
@@ -163,6 +172,7 @@ cd viriato/gatekeeper_avancado
 **Cenário simulado:** Falha de conectividade de rede
 
 **Resultado esperado:**
+
 ```
 [WARNING] [2025-01-02 14:31:15] ⚠️ Conectividade de rede: FALHA
 [ERROR] [2025-01-02 14:31:15] ❌ Erro no diagnóstico (tentativa 1/5)
@@ -172,6 +182,7 @@ cd viriato/gatekeeper_avancado
 ### 🔍 Teste 3: Verificação de lockfile
 
 **Comando:**
+
 ```bash
 # Primeira execução
 ./gatekeeper_avancado_loop.sh &
@@ -181,6 +192,7 @@ cd viriato/gatekeeper_avancado
 ```
 
 **Resultado esperado:**
+
 ```
 [ERROR] ❌ Gatekeeper Avançado já está em execução (lockfile existe: .gatekeeper_avancado.lock)
 [ERROR] 💡 Para forçar paragem: rm .gatekeeper_avancado.lock
@@ -200,6 +212,7 @@ cd viriato/gatekeeper_avancado
 ## ✅ SELF-CHECK - CHECKLIST OBJETIVA
 
 ### 📋 Mapeamento completo da implementação atual
+
 - [x] **Ficheiros identificados**: `dobbie_sentinel.py`, `run_sentinel.py`, `app.py`
 - [x] **Comandos mapeados**: `python run_sentinel.py`, thread daemon no backend
 - [x] **Intervalos documentados**: 60s normal / 30s erro
@@ -208,6 +221,7 @@ cd viriato/gatekeeper_avancado
 - [x] **Modo de arranque documentado**: Automático (thread) + manual (script)
 
 ### 📋 Explicação simples de funcionamento
+
 - [x] **Ciclo explicado**: Loop infinito com sleep configurável
 - [x] **Sucesso/falha definido**: Códigos de saída 0/1, logs estruturados
 - [x] **Stop documentado**: Ctrl+C, remoção de lockfile
@@ -215,6 +229,7 @@ cd viriato/gatekeeper_avancado
 - [x] **Riscos identificados**: CPU/I/O, falsos positivos, dependências
 
 ### 📋 Pacote gatekeeper_avancado/ criado
+
 - [x] **gatekeeper_avancado_loop.sh**: Script executável com lógica extraída
 - [x] **GATEKEEPER_AVANCADO.md**: Manual completo de utilização
 - [x] **Lockfile simples**: `.gatekeeper_avancado.lock` com PID
@@ -224,12 +239,14 @@ cd viriato/gatekeeper_avancado
 - [x] **Códigos de saída**: 0 (OK) / 1 (erro crítico)
 
 ### 📋 Logs por ciclo gravados
+
 - [x] **Diretório criado**: `gatekeeper_avancado_logs/`
 - [x] **Formato preservado**: Compatível com logs originais
 - [x] **Exemplo incluído**: `exemplo.log` com cenários realistas
 - [x] **Rotação documentada**: Logs diários por data
 
 ### 📋 Proposta de integração para Ordem
+
 - [x] **Localização alvo**: `./ordem/gatekeeper_avancado/`
 - [x] **Tarefas VSCode**: Configurações completas
 - [x] **Scripts npm**: Propostos para facilitar uso
@@ -237,6 +254,7 @@ cd viriato/gatekeeper_avancado
 - [x] **Sistema de notificações**: Integração com API da Ordem
 
 ### 📋 RELATORIO.MD atualizado
+
 - [x] **PLAN**: Mapeamento completo da implementação atual
 - [x] **PATCH**: Ficheiros criados/alterados documentados
 - [x] **TESTS**: Exemplos de execução com logs
@@ -276,5 +294,5 @@ cd viriato/gatekeeper_avancado
 **ORDEM 2025-10-02-021 CONCLUÍDA COM SUCESSO**  
 **Pacote gatekeeper avançado extraído e pronto para integração com projeto Ordem**
 
-*Relatório gerado em: 2025-01-02*  
-*Baseado na implementação do Dobbie Sentinel do Projeto Viriato*
+_Relatório gerado em: 2025-01-02_  
+_Baseado na implementação do Dobbie Sentinel do Projeto Viriato_

@@ -7,10 +7,13 @@ DEPENDÊNCIAS: []
 LINKS: []
 
 ## DESCRIÇÃO
+
 Breve explicação do objetivo deste capítulo.
 
 ## SUBMÓDULOS / ETAPAS
+
 Liste as etapas associadas (geradas automaticamente no TOC).
 
 ## NOTAS
+
 Observações relevantes (riscos, constraints, tech stack).
