@@ -435,4 +435,48 @@ CHECKLIST DO ENGENHEIRO:
 - [ ] TESTS a verde
 - [ ] SELF-CHECK
 - [ ] **RELATORIO.MD ATUALIZADO (OBRIGATÓRIO)**
+
+---
+
+ID: 2025-10-02-025
+PRIORIDADE: Alta
+STATUS: TODO
+
+CONTEXTO:
+A Ordem está funcional: SOP executável, Gatekeeper 7/7, Gatekeeper Avançado em loop, CI no GitHub Actions, Branch Protection ativa, manuais (avançados e iniciantes). Falta fechar a versão 1.1.0 e publicar tag.
+
+AÇÃO:
+Fechar a Ordem v1.1.0 (merge + tag + relatório final).
+
+DETALHES (PASSOS CONCRETOS):
+1) Validar local:
+   - ./ordem/validate_sop.sh
+   - ./ordem/verifica_luz_verde.sh
+   - ./ordem/gatekeeper.sh
+2) Garantir PR com CI verde (GitHub) e aprovar.
+3) Merge para main (via PR – nunca push direto).
+4) Criar tag de release:
+   - git fetch --all
+   - git checkout main && git pull
+   - git tag -a ordem-v1.1.0 -m "Ordem v1.1.0 — Gatekeeper avançado + CI + Branch protection + Manuais iniciantes"
+   - git push origin --tags
+5) Atualizar ordem/relatorio.md (PLAN, PATCH, TESTS, SELF-CHECK) marcando DONE.
+
+CRITÉRIOS (mensuráveis):
+- [ ] validate_sop.sh (exit 0)
+- [ ] verifica_luz_verde.sh (🟢 VERDE)
+- [ ] gatekeeper.sh 7/7
+- [ ] CI a verde no PR
+- [ ] Merge concluído em main
+- [ ] Tag `ordem-v1.1.0` publicada
+- [ ] **RELATORIO.MD ATUALIZADO**
+
+CICLO DE RESPONSABILIDADES:
+- IDE (Codex): valida local, verifica CI, conduz PR/merge, executa tagging.
+- Engenheiro (Claude): confirma verificações, atualiza relatório.
+- Estado-Maior (GPT-5): garante doutrina e revisão final.
+- Operador (Tu): apenas supervisiona execução.
+
+PRAZO: Hoje.
+RELATORIO.MD ATUALIZADO (OBRIGATÓRIO).
 ````

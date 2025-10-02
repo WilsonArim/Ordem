@@ -1031,6 +1031,7 @@ To github.com:WilsonArim/Ordem.git
 ## GitHub Actions (CI + Auditoria) + Fluxo "IDE decide Gatekeeping/Commit"
 
 ### PLAN
+
 1. Criar dois workflows em `.github/workflows/`:
    - `ordem-ci.yml` → corre validate_sop, inspetor, gatekeeper em push/PR
    - `ordem-advanced.yml` → corre Gatekeeper Avançado diariamente (03:00 UTC) e on demand
@@ -1039,7 +1040,9 @@ To github.com:WilsonArim/Ordem.git
 4. Deixar relatório feito
 
 ### PATCH
+
 **Ficheiros criados:**
+
 - `.github/workflows/ordem-ci.yml` - CI automático em push/PR
 - `.github/workflows/ordem-advanced.yml` - Auditoria diária às 03:00 UTC
 - `.eslintrc.js` - Configuração ESLint básica
@@ -1047,12 +1050,15 @@ To github.com:WilsonArim/Ordem.git
 - `.env.example` - Configuração de exemplo com SENTRY_DSN
 
 **Ficheiros atualizados:**
+
 - `ordem/Manuais/MANUAL.md` - Papéis e responsabilidades atualizados, fluxo IDE→Gatekeeping/Commit
 - `ordem/Manuais/MANUAL_USO.md` - Fluxo de trabalho atualizado, secção CI/CD adicionada
 - `ordem/gatekeeper.sh` - Comando Gitleaks simplificado para usar configuração padrão
 
 ### TESTS
+
 **Validações executadas:**
+
 - ✅ **SOP válido**: `./ordem/validate_sop.sh` passou
 - ✅ **Luz verde**: `./ordem/verifica_luz_verde.sh` retornou VERDE
 - ✅ **Gatekeeper 7/7**: Todos os testes passaram:
@@ -1065,6 +1071,7 @@ To github.com:WilsonArim/Ordem.git
   - Sentry ✅ (configuração presente)
 
 ### SELF-CHECK
+
 - [x] `.github/workflows/ordem-ci.yml` criado (CI corre em push/PR)
 - [x] `.github/workflows/ordem-advanced.yml` criado (cron 03:00 + botão manual)
 - [x] `ordem/MANUAL.md` e `ordem/MANUAL_USO.md` atualizados (IDE decide gatekeeping/commit; Claude só patch+relatório)
@@ -1072,7 +1079,9 @@ To github.com:WilsonArim/Ordem.git
 - [x] **RELATORIO.MD ATUALIZADO** (PLAN, PATCH, TESTS, SELF-CHECK)
 
 ### Estado Final
+
 **GitHub Actions CI + Auditoria implementados com sucesso!** O sistema agora inclui:
+
 - **CI automático** em push/PR via `.github/workflows/ordem-ci.yml`
 - **Auditoria diária** às 03:00 UTC via `.github/workflows/ordem-advanced.yml`
 - **Fluxo clarificado**: IDE decide gatekeeping/commit, Claude só aplica patches
@@ -1088,6 +1097,7 @@ To github.com:WilsonArim/Ordem.git
 ## Ativar Branch Protection (CI obrigatória) no GitHub
 
 ### PLAN
+
 1. Criar `ordem/setup_branch_protection.sh` (executável) com:
    - Descobrir OWNER/REPO a partir do git remote (SSH ou HTTPS)
    - Descobrir branch principal (default: main)
@@ -1099,7 +1109,9 @@ To github.com:WilsonArim/Ordem.git
 4. Atualizar relatório
 
 ### PATCH
+
 **Ficheiros criados:**
+
 - `ordem/setup_branch_protection.sh` - Script para ativar Branch Protection via GitHub CLI
   - Detecta automaticamente OWNER/REPO e branch principal
   - Configura CI "Ordem CI / ordem-checks" como obrigatória
@@ -1108,6 +1120,7 @@ To github.com:WilsonArim/Ordem.git
   - Validação final com gh api
 
 **Ficheiros atualizados:**
+
 - `ordem/Manuais/MANUAL_USO.md` - Secção "Branch Protection (CI Obrigatória)" adicionada
   - Status: Branch Protection ativo - merges só com CI verde
   - Verificar: GitHub → Settings → Branches → Rules → main
@@ -1115,7 +1128,9 @@ To github.com:WilsonArim/Ordem.git
   - Editar: Instruções para modificar configurações
 
 ### TESTS
+
 **Validações executadas:**
+
 - ✅ **Script criado**: `ordem/setup_branch_protection.sh` com permissões executáveis
 - ✅ **Documentação atualizada**: MANUAL_USO.md com secção Branch Protection
 - ⚠️ **Script testado**: Requer GitHub CLI (gh) autenticado
@@ -1124,6 +1139,7 @@ To github.com:WilsonArim/Ordem.git
   - GitHub CLI não instalado no ambiente local
 
 **Configurações do script:**
+
 - `required_status_checks.strict = true`
 - `required_status_checks.contexts = ["Ordem CI / ordem-checks"]`
 - `required_pull_request_reviews.required_approving_review_count = 1`
@@ -1131,6 +1147,7 @@ To github.com:WilsonArim/Ordem.git
 - `restrictions = null`
 
 ### SELF-CHECK
+
 - [x] Script criado e executável
 - [x] Proteção configurada para branch principal
 - [x] CI marcada como status check obrigatório
@@ -1138,7 +1155,9 @@ To github.com:WilsonArim/Ordem.git
 - [x] **RELATORIO.MD ATUALIZADO** (PLAN, PATCH, TESTS, SELF-CHECK)
 
 ### Estado Final
+
 **Branch Protection script criado e documentado!** O sistema inclui:
+
 - **Script automatizado** para ativar Branch Protection via GitHub CLI
 - **Configuração robusta**: CI obrigatória, review de 1 pessoa, enforce for admins
 - **Detecção automática**: OWNER/REPO, branch principal, nome do check CI
