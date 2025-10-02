@@ -1,21 +1,28 @@
 # MANUAL da Fábrica
 
-## Papéis
-- **Estado-Maior (GPT-5)**: escreve/ajusta SOPs, templates e pipeline.
-- **Codex (VSCode/IDE)**: gere o dia-a-dia; decide luz verde via `verifica_luz_verde.sh`.
-- **Engenheiro (Claude)**: executa ordens, aplica patches, escreve `relatorio.md`.
-- **Operador (Tu)**: corre Gatekeeper e Git, quando autorizado.
+## Papéis e Responsabilidades
 
-## Linha de Montagem (Inviolável)
-1. **Ordem** (ORDER_TEMPLATE) → entra em `ordem/codex_claude/CLAUDE_QUEUE.md`.
-2. **Execução** (Claude) → aplica PATCH e **atualiza `ordem/codex_claude/relatorio.md`** (PLAN, PATCH, TESTS, SELF-CHECK).
-3. **Inspeção** (Codex) → `./ordem/verifica_luz_verde.sh`
-   - `🟡 PRONTO PARA GATEKEEPER` (exit 10) → Operador: `./ordem/gatekeeper.sh`
-   - `🟢 VERDE` (exit 0) → Git permitido
-4. **Gatekeeper** (Operador) → 7/7 PASSOU documentado no relatório.
-5. **Git** (Operador) → commit com `[ORD-YYYY-MM-DD-XXX] …` e push.
+- **Estado-Maior (GPT-5)**: escreve/ajusta SOPs, templates e pipeline.
+- **IDE (Codex)**: lê pipeline, cria CLAUDE_QUEUE.md, dispara gatekeeper local, faz commit/push/PR (Draft), decide avanço.
+- **Engenheiro (Claude)**: aplica patch, preenche `ordem/codex_claude/relatorio.md` (PLAN, PATCH, TESTS, SELF-CHECK). **Não faz commit**.
+- **Operador (Tu)**: corre Gatekeeper e Git, quando autorizado pelo IDE.
+
+## Fluxo Local (IDE decide Gatekeeping/Commit)
+
+1. **IDE cria ordem** no `ordem/codex_claude/CLAUDE_QUEUE.md`.
+2. **Claude implementa** e preenche `ordem/codex_claude/relatorio.md`.
+3. **IDE corre** `./ordem/gatekeeper.sh`.
+   - Se falhar: IDE usa wrappers (`npm run gatekeeper:*`), cria nova ordem para corrigir.
+   - Se 7/7: IDE faz commit/push e abre PR Draft.
+
+## Fluxo GitHub (CI Automático)
+
+- **Em push/PR**: CI corre automático (`.github/workflows/ordem-ci.yml`).
+- **Quando CI a verde** + relatório OK → IDE/Codex muda PR de Draft→Ready e faz merge.
+- **Auditoria diária**: `.github/workflows/ordem-advanced.yml` corre às 03:00 UTC.
 
 ## Pipeline (Capítulo → Etapa → Tarefa)
+
 - Criar:
   - `./ordem/make_chapter.sh M01 autenticacao`
   - `./ordem/make_stage.sh   M01 E01 base-tokens`
@@ -23,6 +30,7 @@
 - Atualizar TOC: `./ordem/update_pipeline_toc.sh` (também automático no pre-commit).
 
 ## Gatekeeper Avançado (Monitorização Contínua)
+
 - **Vigia automático**: `./ordem/gatekeeper_avancado/gatekeeper_avancado_loop.sh`
 - **Verifica a cada 60s**: Conectividade, recursos, integridade
 - **Logs automáticos**: `ordem/gatekeeper_avancado/gatekeeper_avancado_logs/`
@@ -33,6 +41,7 @@
   - Em `TASK.md`: secção **CRITÉRIOS** com **≥ 2** itens `- [ ]` / `- [x]` (obrigatório).
 
 ## Hooks (Disciplina Automática)
+
 - `ordem/hooks/pre-commit.sh` → atualiza TOC, valida SOP e **bloqueia commit** se falhar.
 - Instalação:
   ```bash
@@ -41,9 +50,11 @@
   ```
 
 ## Comandos Essenciais
+
 - Validar SOP: `./ordem/validate_sop.sh`
 - Ver luz verde: `./ordem/verifica_luz_verde.sh`
 - Gatekeeper: `./ordem/gatekeeper.sh`
 
 ## Commits (Convenção)
+
 - Mensagem deve conter: `[ORD-YYYY-MM-DD-XXX] Descrição curta do patch`

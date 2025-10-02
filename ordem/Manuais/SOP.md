@@ -40,18 +40,22 @@ A sequência completa de desenvolvimento disciplinado:
 ## Cláusulas de Ferro
 
 ### 1. Relatório Obrigatório
+
 - **Sem `relatorio.md` válido** → ordem inválida
 - **Sem `relatorio.md` atualizado** → ordem não avança
 
 ### 2. Gatekeeper Obrigatório
+
 - **Sem 7/7 PASSOU** → **proibido Git**
 - **Sem Gatekeeper** → ordem não concluída
 
 ### 3. Autorização Obrigatória
+
 - **Sem ordem explícita do Estado-Maior** → **proibido Git**
 - **Sem autorização** → não executar Git
 
 ### 4. Convenção de Commit
+
 - **Mensagens de commit DEVEM iniciar com `[ORD-YYYY-MM-DD-XXX]`**
 - **Formato**: `[ORD-2025-09-30-006] <resumo>`
 - **Sem convenção** → commit inválido
@@ -67,11 +71,13 @@ A sequência completa de desenvolvimento disciplinado:
 ## Validações Automáticas
 
 ### Pre-commit Hook
+
 - Validação SOP
 - Verificação de formatação (Prettier)
 - Linting JavaScript/TypeScript (ESLint) - condicional
 
 ### GitHub Actions CI
+
 - Setup Node.js 18+/20+ e Python 3.9+/3.11+
 - Instalação de dependências
 - Validação SOP
@@ -99,16 +105,19 @@ A sequência completa de desenvolvimento disciplinado:
 ## Papéis e Responsabilidades
 
 ### Comandante
+
 - Define estratégia geral
 - Aprova mudanças de doutrina
 - Supervisiona operações críticas
 
 ### Estado-Maior (GPT-5)
+
 - Estratégia apenas
 - Valida relatórios complexos
 - Autoriza mudanças de processo
 
 ### Codex (Inspetor/Operador Diário)
+
 - **Delegado para luz verde** mediante `verifica_luz_verde.sh`
 - Gere operação diária sem depender do Estado-Maior
 - Executa `verifica_luz_verde.sh` após cada ordem
@@ -116,12 +125,14 @@ A sequência completa de desenvolvimento disciplinado:
 - Registra bloqueios no `relatorio.md`
 
 ### Engenheiro (Claude)
+
 - Executa ordens
 - Aplica patches
 - Corre testes
 - Atualiza `relatorio.md`
 
 ### Operador (Tu)
+
 - Corre Gatekeeper após autorização do Codex
 - Executa Git apenas após 7/7 PASSOU e ordem explícita do Codex
 - Segue convenções de commit
