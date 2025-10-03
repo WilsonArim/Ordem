@@ -116,6 +116,7 @@ O workflow `.github/workflows/fabrica-ci.yml` executa em:
 **Após 7/7 PASSOU e luz verde do Estado-Maior, o Operador executa Git com a convenção de commit.**
 
 **Sequência obrigatória:**
+
 1. Engenheiro → `relatorio.md`
 2. Estado-Maior valida
 3. Operador corre Gatekeeper
@@ -141,9 +142,11 @@ O workflow `.github/workflows/fabrica-ci.yml` executa em:
 ## Como o Codex gere o dia-a-dia
 
 ### Papel do Codex
+
 **Codex é o Inspetor/Operador Diário** - delegado para luz verde mediante `verifica_luz_verde.sh`.
 
 ### Operação Diária
+
 1. **Ler ordens** em `CLAUDE_QUEUE.md`
 2. **Executar inspetor** após cada ordem: `./ordem/verifica_luz_verde.sh`
 3. **Decidir próxima ação** baseado no código de saída:
@@ -152,6 +155,7 @@ O workflow `.github/workflows/fabrica-ci.yml` executa em:
    - **Exit 1 (BLOQUEADO)**: Devolver ao Engenheiro
 
 ### Comandos Essenciais
+
 ```bash
 # Inspetor principal
 ./ordem/verifica_luz_verde.sh
@@ -164,12 +168,15 @@ O workflow `.github/workflows/fabrica-ci.yml` executa em:
 ```
 
 ### VSCode Tasks
+
 Use `Ctrl+Shift+P` → "Tasks: Run Task":
+
 - **SOP: Validar** - Valida regras SOP
 - **Fábrica: Gatekeeper (7/7)** - Executa testes de qualidade
 - **Fábrica: Verificar luz verde (Inspetor)** - Verifica se está pronto para prosseguir
 
 ### Manual Completo
+
 Consulte `ordem/CODEX_ONBOARDING.md` para instruções detalhadas.
 
 ## Troubleshooting

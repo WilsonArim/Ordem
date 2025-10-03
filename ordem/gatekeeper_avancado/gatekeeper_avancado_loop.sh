@@ -1,17 +1,15 @@
 #!/bin/bash
-"""
-🛡️ GATEKEEPER AVANÇADO - SISTEMA DE MONITORIZAÇÃO CONTÍNUA
-
-Baseado no Dobbie Sentinel do Projeto Viriato.
-Executa verificações de segurança a cada 60 segundos.
-
-USO:
-    chmod +x gatekeeper_avancado_loop.sh
-    ./gatekeeper_avancado_loop.sh
-
-PARAGEM:
-    Ctrl+C ou remover .gatekeeper_avancado.lock
-"""
+# 🛡️ GATEKEEPER AVANÇADO - SISTEMA DE MONITORIZAÇÃO CONTÍNUA
+#
+# Baseado no Dobbie Sentinel do Projeto Viriato.
+# Executa verificações de segurança a cada 60 segundos.
+#
+# USO:
+#     chmod +x gatekeeper_avancado_loop.sh
+#     ./gatekeeper_avancado_loop.sh
+#
+# PARAGEM:
+#     Ctrl+C ou remover .gatekeeper_avancado.lock
 
 set -euo pipefail
 
@@ -101,7 +99,18 @@ run_diagnostics() {
     fi
     
     # 🔍 Diagnóstico 3: Verificar memória
-    local mem_usage=$(free | grep Mem | awk '{printf "%.0f", $3/$2 * 100.0}')
+    # macOS memory usage calculation
+    local mem_usage=$(vm_stat | awk '
+        /Pages free/ { free = $3 }
+        /Pages active/ { active = $3 }
+        /Pages inactive/ { inactive = $3 }
+        /Pages speculative/ { speculative = $3 }
+        /Pages wired down/ { wired = $4 }
+        END {
+            used = active + inactive + wired
+            total = used + free
+            printf "%.0f", (used / total) * 100.0
+        }')
     if [[ $mem_usage -lt 90 ]]; then
         log_message "INFO" "✅ Memória: OK (${mem_usage}% usado)"
     else
@@ -175,7 +184,7 @@ main() {
 
 # Verificar dependências
 check_dependencies() {
-    local deps=("ping" "df" "free" "pgrep" "find" "grep")
+    local deps=("ping" "df" "vm_stat" "pgrep" "find" "grep")
     local missing_deps=()
     
     for dep in "${deps[@]}"; do

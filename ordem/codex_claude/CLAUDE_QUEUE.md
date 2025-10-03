@@ -4,23 +4,26 @@ STATUS: DONE
 
 CONTEXTO:
 A Fábrica está funcional (pipeline, geradores, TOC, validador, inspetor). Falta “trancar a porta”:
-1) TOC atualizar automaticamente no Git,
-2) Validador reforçado: cada TASK precisa de ≥2 critérios,
-3) Manual final do fluxo e papéis.
+
+1. TOC atualizar automaticamente no Git,
+2. Validador reforçado: cada TASK precisa de ≥2 critérios,
+3. Manual final do fluxo e papéis.
 
 AÇÃO:
 Blindar a Fábrica (hook + validação adicional) e criar MANUAL.md.
 
 DETALHES (PASSOS CONCRETOS):
-1) Criar `ordem/hooks/pre-commit.sh` com o BLOCO A, dar `chmod +x`, e instruir cópia para `.git/hooks/pre-commit`.
-2) Atualizar `ordem/validate_sop.sh` adicionando a verificação “CRITÉRIOS ≥ 2” para **todas as TASK.md** (BLOCO B).
-3) Criar `ordem/MANUAL.md` com o BLOCO C.
-4) Executar:
+
+1. Criar `ordem/hooks/pre-commit.sh` com o BLOCO A, dar `chmod +x`, e instruir cópia para `.git/hooks/pre-commit`.
+2. Atualizar `ordem/validate_sop.sh` adicionando a verificação “CRITÉRIOS ≥ 2” para **todas as TASK.md** (BLOCO B).
+3. Criar `ordem/MANUAL.md` com o BLOCO C.
+4. Executar:
    - `./ordem/update_pipeline_toc.sh` (uma vez)
    - `./ordem/validate_sop.sh` (deve sair 0)
-5) Atualizar `ordem/codex_claude/relatorio.md` (PLAN, PATCH, TESTS, SELF-CHECK).
+5. Atualizar `ordem/codex_claude/relatorio.md` (PLAN, PATCH, TESTS, SELF-CHECK).
 
 CRITÉRIOS (mensuráveis):
+
 - [ ] Hook criado, executável e instalado em `.git/hooks/pre-commit`
 - [ ] `pre-commit` atualiza TOC e bloqueia commit se o validador falhar
 - [ ] `validate_sop.sh` reprova qualquer TASK com `< 2` critérios
@@ -29,18 +32,21 @@ CRITÉRIOS (mensuráveis):
 - [ ] **RELATORIO.MD ATUALIZADO**
 
 HANDOFF:
+
 - Depois do relatório OK, o Codex corre `./ordem/verifica_luz_verde.sh`:
   - 10 → Operador corre Gatekeeper
-  - 0  → Operador faz Git (commit `[ORD-YYYY-MM-DD-XXX] …`)
+  - 0 → Operador faz Git (commit `[ORD-YYYY-MM-DD-XXX] …`)
 
 ## CICLO DE RESPONSABILIDADES
+
 - Engenheiro (Claude): aplica BLOCO A+B+C, testa, documenta.
 - Codex: decide luz verde via inspetor.
 - Estado-Maior (GPT-5): supervisiona doutrina.
 - Operador: Gatekeeper/Git apenas após luz verde.
 
 # BLOCO A — ordem/hooks/pre-commit.sh
-```bash
+
+````bash
 #!/usr/bin/env bash
 # Fábrica — pre-commit: mantém TOC atualizado e reforça disciplina
 set -euo pipefail
@@ -117,6 +123,280 @@ BLOCO C — ordem/MANUAL.md
 4. **Gatekeeper** (Operador) → 7/7 PASSOU documentado no relatório.
 5. **Git** (Operador) → commit com `[ORD-YYYY-MM-DD-XXX] …` e push.
 
+---
+
+ID: 2025-10-02-023
+PRIORIDADE: Alta
+STATUS: TODO
+
+CONTEXTO:
+Queremos automatizar a disciplina da Ordem no GitHub (CI em cada push/PR e auditoria diária) e tornar explícito que o IDE (Codex) é quem dispara o gatekeeper local e faz commits/PRs. Claude continua como Engenheiro: aplica patch e preenche ordem/relatorio.md.
+
+AÇÃO (o que fazer):
+	1.	Criar dois workflows em .github/workflows/:
+	•	ordem-ci.yml → corre validate_sop, inspetor, gatekeeper em push/PR.
+	•	ordem-advanced.yml → corre Gatekeeper Avançado diariamente (03:00 UTC) e on demand.
+	2.	Atualizar documentação de fluxo para "IDE decide Gatekeeping/Commit".
+	3.	Validar que tudo corre localmente e no GitHub.
+	4.	Deixar relatório feito.
+
+DETALHES (passos concretos):
+
+1) Criar .github/workflows/ordem-ci.yml
+
+Conteúdo:
+
+name: Ordem CI
+on:
+  push:
+    branches: [ main, "**/*" ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ordem-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preparar permissões
+        run: chmod +x ordem/*.sh || true
+
+      - name: Validar SOP
+        run: ./ordem/validate_sop.sh
+
+      - name: Inspetor (Luz Verde)
+        run: ./ordem/verifica_luz_verde.sh
+
+      - name: Gatekeeper (7/7)
+        run: ./ordem/gatekeeper.sh
+
+      - name: Guardar relatórios (artefactos)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ordem-relatorios
+          path: |
+            ordem/relatorio.md
+            ordem/*.log
+            pipeline/PIPELINE_TOC.md
+
+2) Criar .github/workflows/ordem-advanced.yml
+
+Conteúdo:
+
+name: Ordem Advanced Audit
+on:
+  schedule:
+    - cron: "0 3 * * *"   # todos os dias às 03:00 UTC
+  workflow_dispatch: {}    # permite correr manualmente via botão
+
+jobs:
+  deep-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preparar permissões
+        run: chmod +x ordem/*.sh || true
+
+      - name: Gatekeeper Avançado (scan profundo)
+        run: ./ordem/gatekeeper_avancado.sh || echo "⚠️ avançado terminou com código != 0"
+
+      - name: Guardar relatórios (artefactos)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ordem-advanced-reports
+          path: |
+            ordem/relatorio.md
+            ordem/*.log
+
+3) Atualizar a documentação (fluxo IDE→Gatekeeping/Commit; Claude→Patch/Relatório)
+	•	Editar ordem/MANUAL.md e ordem/MANUAL_USO.md:
+	•	Secção "Papéis e responsabilidades":
+	•	IDE (Codex): lê pipeline, cria CLAUDE_QUEUE.md, dispara gatekeeper local, faz commit/push/PR (Draft), decide avanço.
+	•	Engenheiro (Claude): aplica patch, preenche ordem/relatorio.md (PLAN, PATCH, TESTS, SELF-CHECK). Não faz commit.
+	•	Secção "Fluxo local" (resumo):
+	1.	IDE cria ordine no CLAUDE_QUEUE.md.
+	2.	Claude implementa e preenche ordem/relatorio.md.
+	3.	IDE corre ./ordem/gatekeeper.sh.
+	•	Se falhar: IDE usa wrappers (npm run gatekeeper:*), cria nova ordem para corrigir.
+	•	Se 7/7: IDE faz commit/push e abre PR Draft.
+	•	Secção "Fluxo GitHub":
+	•	Em push/PR, o CI corre automático (ordem-ci.yml).
+	•	Quando CI a verde + relatório OK → IDE/Codex muda PR de Draft→Ready e faz merge.
+
+4) Opcional (se existir ordem/bootstrap.sh):
+	•	Adicionar nota: "Se o repo tiver remote GitHub, o bootstrap garante a criação/commit dos .github/workflows/*.yml no primeiro push."
+
+5) Executar verificação local:
+
+./ordem/validate_sop.sh
+./ordem/verifica_luz_verde.sh || true   # pode devolver "Pronto para Gatekeeper" (exit 10)
+./ordem/gatekeeper.sh
+
+6) Git (feito pelo IDE/Codex — não pelo Engenheiro):
+
+git add .github/workflows ordem/MANUAL*.md
+git commit -m "[ORD-2025-10-02-023] CI (push/PR) + Auditoria diária + Fluxo: IDE decide Gatekeeping/Commit"
+git push -u origin <tua-branch>
+# abrir PR como Draft; CI deve correr sozinho
+
+CRITÉRIOS (mensuráveis):
+	•	.github/workflows/ordem-ci.yml criado (CI corre em push/PR)
+	•	.github/workflows/ordem-advanced.yml criado (cron 03:00 + botão manual)
+	•	ordem/MANUAL.md e ordem/MANUAL_USO.md atualizados (IDE decide gatekeeping/commit; Claude só patch+relatório)
+	•	CI no PR a verde (ordem-ci.job = sucesso)
+	•	RELATORIO.MD ATUALIZADO (PLAN, PATCH, TESTS, SELF-CHECK)
+
+CICLO DE RESPONSABILIDADES:
+	•	Engenheiro (Claude): cria/edita os ficheiros YAML, atualiza manuais, corre validações locais, atualiza ordem/relatorio.md.
+	•	IDE (Codex): executa gatekeeper.sh local quando necessário, faz commit/push/PR e verifica CI.
+	•	Estado-Maior (GPT-5): supervisiona e ajusta a doutrina/SOP.
+
+PRAZO: Hoje.
+
+RELATORIO.MD ATUALIZADO (OBRIGATÓRIO).
+
+---
+
+ID: 2025-10-02-024
+PRIORIDADE: Alta
+STATUS: TODO
+
+CONTEXTO:
+A Ordem já corre CI (GitHub Actions) em push/PR e define o fluxo em que o IDE (Codex) decide Gatekeeping/Commit. Falta trancar a branch principal para que não haja merge sem a CI a verde e, opcionalmente, sem review.
+
+AÇÃO (o que fazer):
+Ativar branch protection na branch principal com:
+	•	Required status checks: CI "Ordem CI / ordem-checks" obrigatória (strict=true).
+	•	Require pull request before merging (1 review, opcional).
+	•	Enforce for admins (opcional).
+Implementar via script ordem/setup_branch_protection.sh (gh CLI) + documentar fallback via UI.
+
+DETALHES (PASSOS CONCRETOS):
+	1.	Criar ordem/setup_branch_protection.sh (executável) com:
+	•	Descobrir OWNER/REPO a partir do git remote (SSH ou HTTPS).
+	•	Descobrir branch principal (default: main).
+	•	Descobrir o nome exato do check da CI a partir do último PR ou último commit (ex.: "Ordem CI / ordem-checks").
+	•	Se não conseguir detectar, usar por omissão "Ordem CI / ordem-checks".
+	•	Aplicar proteção via gh api:
+	•	required_pull_request_reviews.required_approving_review_count = 1 (podes deixar 0 se o review for dispensável).
+	•	required_status_checks.strict = true
+	•	required_status_checks.contexts = ["Ordem CI / ordem-checks"]
+	•	enforce_admins = true
+	•	restrictions = null (sem limites de quem pode push).
+	•	No final, validar com gh api repos/:owner/:repo/branches/:branch/protection e imprimir o resumo.
+	2.	Atualizar ordem/MANUAL_USO.md (secção CI/CD) com:
+	•	"Branch Protection ativo: merges só com CI verde (e review se configurado)."
+	•	Como verificar no GitHub: Settings → Branches → Rules → main.
+	•	Como editar contagens de review, admins, etc.
+	3.	Executar local (IDE):
+
+chmod +x ordem/setup_branch_protection.sh
+./ordem/setup_branch_protection.sh
+
+	4.	Atualizar ordem/relatorio.md (PLAN, PATCH, TESTS, SELF-CHECK).
+
+BLOCO — ordem/setup_branch_protection.sh
+
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "🔒 Ordem — Ativar Branch Protection (CI obrigatória)"
+
+# 0) Pré-requisitos
+command -v gh >/dev/null 2>&1 || { echo "❌ Necessário GitHub CLI (gh) autenticado: gh auth login"; exit 1; }
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "❌ Não é um repo git."; exit 1; }
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+# 1) Owner/Repo e branch principal
+REMOTE="$(git remote get-url origin 2>/dev/null || true)"
+if [[ -z "${REMOTE}" ]]; then
+  echo "❌ Não encontrei 'origin'. Faz: git remote add origin git@github.com:<owner>/<repo>.git"
+  exit 1
+fi
+
+if [[ "$REMOTE" =~ github\.com[:/](.+)/(.+)(\.git)?$ ]]; then
+  OWNER="${BASH_REMATCH[1]}"
+  REPO="${BASH_REMATCH[2]}"
+else
+  echo "❌ Remote não parece GitHub: $REMOTE"; exit 1
+fi
+
+BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null || echo "main")"
+# tenta descobrir defaultBranch no GitHub
+DEFAULT_BRANCH="$(gh repo view "${OWNER}/${REPO}" --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null || echo "${BRANCH}")"
+BRANCH="${DEFAULT_BRANCH}"
+
+echo "📦 Repo: ${OWNER}/${REPO}"
+echo "🌿 Branch protegida: ${BRANCH}"
+
+# 2) Determinar nome do check da CI
+# Tentamos obter o nome exato do job a partir do último run; fallback para "Ordem CI / ordem-checks"
+CHECK_NAME="$(gh run list --repo "${OWNER}/${REPO}" --json name,headBranch -q '.[0].name' 2>/dev/null || true)"
+if [[ -z "${CHECK_NAME}" ]]; then
+  CHECK_NAME="Ordem CI / ordem-checks"
+fi
+# Normalizar caso o name seja só "Ordem CI"
+if [[ "${CHECK_NAME}" == "Ordem CI" ]]; then
+  CHECK_NAME="Ordem CI / ordem-checks"
+fi
+echo "✅ Status check requerido: ${CHECK_NAME}"
+
+# 3) Construir JSON e aplicar proteção
+TMP="$(mktemp)"
+cat > "${TMP}" <<JSON
+{
+  "required_status_checks": {
+    "strict": true,
+    "contexts": ["${CHECK_NAME}"]
+  },
+  "enforce_admins": true,
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1
+  },
+  "restrictions": null
+}
+JSON
+
+echo "🚀 Aplicando proteção…"
+gh api -X PUT \
+  -H "Accept: application/vnd.github+json" \
+  "/repos/${OWNER}/${REPO}/branches/${BRANCH}/protection" \
+  --input "${TMP}"
+
+echo "🔎 Validação:"
+gh api -H "Accept: application/vnd.github+json" "/repos/${OWNER}/${REPO}/branches/${BRANCH}/protection" | jq '{branch:"'${BRANCH}'", required_status_checks, enforce_admins, required_pull_request_reviews}'
+
+echo "🎉 Branch Protection ativo. Merges só com CI verde (+ review)."
+
+TESTS (o que validar):
+	•	./ordem/setup_branch_protection.sh termina com sucesso.
+	•	gh api repos/<owner>/<repo>/branches/<branch>/protection devolve:
+	•	required_status_checks.strict = true
+	•	required_status_checks.contexts contém "Ordem CI / ordem-checks"
+	•	required_pull_request_reviews.required_approving_review_count = 1 (ou o número definido)
+	•	enforce_admins = true (se mantido)
+
+SELF-CHECK:
+	•	Script criado e executável
+	•	Proteção aplicada na branch principal
+	•	CI marcada como status check obrigatório
+	•	MANUAL_USO.md atualizado (secção CI/CD → Branch Protection)
+	•	RELATORIO.MD ATUALIZADO
+
+CICLO DE RESPONSABILIDADES
+	•	Engenheiro (Claude): criar script, testar, atualizar manuais e ordem/relatorio.md.
+	•	IDE (Codex): executar o script, confirmar no GitHub (Settings → Branches), abrir PR Drafts, gerir merges.
+	•	Estado-Maior (GPT-5): supervisiona e ajusta SOP.
+
+PRAZO: Hoje.
+RELATORIO.MD ATUALIZADO (OBRIGATÓRIO).
+
 ## Pipeline (Capítulo → Etapa → Tarefa)
 - Criar:
   - `./ordem/make_chapter.sh M01 autenticacao`
@@ -155,3 +435,110 @@ CHECKLIST DO ENGENHEIRO:
 - [ ] TESTS a verde
 - [ ] SELF-CHECK
 - [ ] **RELATORIO.MD ATUALIZADO (OBRIGATÓRIO)**
+
+---
+
+ID: 2025-10-02-025
+PRIORIDADE: Alta
+STATUS: TODO
+
+CONTEXTO:
+A Ordem está funcional: SOP executável, Gatekeeper 7/7, Gatekeeper Avançado em loop, CI no GitHub Actions, Branch Protection ativa, manuais (avançados e iniciantes). Falta fechar a versão 1.1.0 e publicar tag.
+
+AÇÃO:
+Fechar a Ordem v1.1.0 (merge + tag + relatório final).
+
+DETALHES (PASSOS CONCRETOS):
+1) Validar local:
+   - ./ordem/validate_sop.sh
+   - ./ordem/verifica_luz_verde.sh
+   - ./ordem/gatekeeper.sh
+2) Garantir PR com CI verde (GitHub) e aprovar.
+3) Merge para main (via PR – nunca push direto).
+4) Criar tag de release:
+   - git fetch --all
+   - git checkout main && git pull
+   - git tag -a ordem-v1.1.0 -m "Ordem v1.1.0 — Gatekeeper avançado + CI + Branch protection + Manuais iniciantes"
+   - git push origin --tags
+5) Atualizar ordem/relatorio.md (PLAN, PATCH, TESTS, SELF-CHECK) marcando DONE.
+
+CRITÉRIOS (mensuráveis):
+- [ ] validate_sop.sh (exit 0)
+- [ ] verifica_luz_verde.sh (🟢 VERDE)
+- [ ] gatekeeper.sh 7/7
+- [ ] CI a verde no PR
+- [ ] Merge concluído em main
+- [ ] Tag `ordem-v1.1.0` publicada
+- [ ] **RELATORIO.MD ATUALIZADO**
+
+CICLO DE RESPONSABILIDADES:
+- IDE (Codex): valida local, verifica CI, conduz PR/merge, executa tagging.
+- Engenheiro (Claude): confirma verificações, atualiza relatório.
+- Estado-Maior (GPT-5): garante doutrina e revisão final.
+- Operador (Tu): apenas supervisiona execução.
+
+PRAZO: Hoje.
+RELATORIO.MD ATUALIZADO (OBRIGATÓRIO).
+
+---
+
+ID: 2025-10-02-025
+PRIORIDADE: Alta
+STATUS: TODO
+
+CONTEXTO:
+Durante o CI da Ordem v1.0.0, o Gitleaks detetou falsos positivos no `README.md` (exemplos de chaves AWS).
+Localmente, todos os 7/7 testes passaram, mas no GitHub Actions a pipeline falhou.
+É necessário corrigir o Gitleaks e lançar a versão v1.1.0 com a correção aplicada.
+
+AÇÃO:
+1. Criar/atualizar ficheiro `.gitleaksignore` para ignorar `README.md`.
+2. Reexecutar `./ordem/gatekeeper.sh` localmente → deve dar 7/7 PASSOU.
+3. Atualizar `ordem/relatorio.md` com as correções aplicadas.
+4. Criar commit:
+   ```bash
+   git add .
+   git commit -m "[ORD-2025-10-02-025] Patch Gitleaks (.gitleaksignore) + release v1.1.0"
+   ```
+5. Criar tag v1.1.0:
+   ```bash
+   git tag -a ordem-v1.1.0 -m "Ordem v1.1.0 — Patch Gitleaks aplicado"
+   ```
+6. Push branch + tag:
+   ```bash
+   git push
+   git push origin --tags
+   ```
+
+DETALHES:
+- O patch consiste apenas em ignorar README.md para Gitleaks.
+- A disciplina do Gatekeeper mantém-se intocada (nenhum relaxamento de regra).
+- Após o patch, CI deve passar a verde.
+- Versão v1.1.0 formaliza a correção.
+
+CRITÉRIOS:
+- .gitleaksignore criado/atualizado
+- Gatekeeper 7/7 PASSOU localmente
+- ordem/relatorio.md atualizado
+- Commit criado com mensagem correta
+- Tag v1.1.0 criada
+- Push branch + tags efetuado
+- CI GitHub verde
+
+CHECKLIST:
+- PLAN escrito
+- PATCH aplicado (.gitleaksignore)
+- TESTS → Gatekeeper 7/7
+- SELF-CHECK → todos os critérios
+- RELATORIO.MD ATUALIZADO
+- Tag v1.1.0 publicada
+
+CICLO DE RESPONSABILIDADES:
+- Engenheiro (Claude): aplicar patch .gitleaksignore, validar 7/7, atualizar relatório, criar commit+tag.
+- IDE (Codex): confirmar relatório, gerir CI, dar luz verde para merge.
+- Estado-Maior (GPT-5): supervisiona doutrina.
+- Operador: aciona Gatekeeper e executa git push quando autorizado.
+
+PRAZO: Hoje.
+RELATORIO.MD ATUALIZADO (OBRIGATÓRIO).
+````

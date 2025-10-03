@@ -1,0 +1,42 @@
+name: Ordem CI
+on:
+  push:
+    branches: [main, "**/*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ordem-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preparar permissões
+        run: chmod +x ordem/*.sh || true
+
+      - name: Instalar dependências
+        run: |
+          npm install
+          pip install semgrep
+          # Instalar gitleaks via GitHub releases
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.18.0/gitleaks_8.18.0_linux_x64.tar.gz | tar -xz
+          sudo mv gitleaks /usr/local/bin/
+
+      - name: Validar SOP
+        run: ./ordem/validate_sop.sh
+
+      - name: Inspetor (Luz Verde)
+        run: ./ordem/verifica_luz_verde.sh
+
+      - name: Gatekeeper (7/7)
+        run: ./ordem/gatekeeper.sh
+
+      - name: Guardar relatórios (artefactos)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ordem-relatorios
+          path: |
+            ordem/codex_claude/relatorio.md
+            ordem/*.log
+            pipeline/PIPELINE_TOC.md
