@@ -479,4 +479,66 @@ CICLO DE RESPONSABILIDADES:
 
 PRAZO: Hoje.
 RELATORIO.MD ATUALIZADO (OBRIGATÓRIO).
+
+---
+
+ID: 2025-10-02-025
+PRIORIDADE: Alta
+STATUS: TODO
+
+CONTEXTO:
+Durante o CI da Ordem v1.0.0, o Gitleaks detetou falsos positivos no `README.md` (exemplos de chaves AWS).
+Localmente, todos os 7/7 testes passaram, mas no GitHub Actions a pipeline falhou.
+É necessário corrigir o Gitleaks e lançar a versão v1.1.0 com a correção aplicada.
+
+AÇÃO:
+1. Criar/atualizar ficheiro `.gitleaksignore` para ignorar `README.md`.
+2. Reexecutar `./ordem/gatekeeper.sh` localmente → deve dar 7/7 PASSOU.
+3. Atualizar `ordem/relatorio.md` com as correções aplicadas.
+4. Criar commit:
+   ```bash
+   git add .
+   git commit -m "[ORD-2025-10-02-025] Patch Gitleaks (.gitleaksignore) + release v1.1.0"
+   ```
+5. Criar tag v1.1.0:
+   ```bash
+   git tag -a ordem-v1.1.0 -m "Ordem v1.1.0 — Patch Gitleaks aplicado"
+   ```
+6. Push branch + tag:
+   ```bash
+   git push
+   git push origin --tags
+   ```
+
+DETALHES:
+- O patch consiste apenas em ignorar README.md para Gitleaks.
+- A disciplina do Gatekeeper mantém-se intocada (nenhum relaxamento de regra).
+- Após o patch, CI deve passar a verde.
+- Versão v1.1.0 formaliza a correção.
+
+CRITÉRIOS:
+- .gitleaksignore criado/atualizado
+- Gatekeeper 7/7 PASSOU localmente
+- ordem/relatorio.md atualizado
+- Commit criado com mensagem correta
+- Tag v1.1.0 criada
+- Push branch + tags efetuado
+- CI GitHub verde
+
+CHECKLIST:
+- PLAN escrito
+- PATCH aplicado (.gitleaksignore)
+- TESTS → Gatekeeper 7/7
+- SELF-CHECK → todos os critérios
+- RELATORIO.MD ATUALIZADO
+- Tag v1.1.0 publicada
+
+CICLO DE RESPONSABILIDADES:
+- Engenheiro (Claude): aplicar patch .gitleaksignore, validar 7/7, atualizar relatório, criar commit+tag.
+- IDE (Codex): confirmar relatório, gerir CI, dar luz verde para merge.
+- Estado-Maior (GPT-5): supervisiona doutrina.
+- Operador: aciona Gatekeeper e executa git push quando autorizado.
+
+PRAZO: Hoje.
+RELATORIO.MD ATUALIZADO (OBRIGATÓRIO).
 ````

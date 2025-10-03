@@ -1,5 +1,2 @@
-# Ignorar ficheiros de documentação que podem conter exemplos
-ordem/Manuais/
-ordem/gatekeeper_avancado/
-pipeline/
-treino_torre/
+# Ignorar README.md - contém apenas exemplos de chaves AWS, não credenciais reais
+README.md

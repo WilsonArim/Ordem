@@ -1165,3 +1165,54 @@ To github.com:WilsonArim/Ordem.git
 - **Validação final** com gh api para confirmar configurações
 
 **Próximo passo**: Executar script após instalar GitHub CLI (`brew install gh && gh auth login`) para ativar Branch Protection no repositório.
+
+---
+
+# Relatório - Ordem 2025-10-02-025
+
+## Patch Gitleaks (.gitleaksignore) + Release v1.1.0
+
+### PLAN
+1. Criar/atualizar ficheiro `.gitleaksignore` para ignorar `README.md`
+2. Reexecutar `./ordem/gatekeeper.sh` localmente → deve dar 7/7 PASSOU
+3. Atualizar `ordem/relatorio.md` com as correções aplicadas
+4. Criar commit com mensagem correta
+5. Criar tag v1.1.0
+6. Push branch + tags
+
+### PATCH
+**Ficheiros criados:**
+- `.gitleaksignore` - Ignora README.md para evitar falsos positivos de chaves AWS de exemplo
+  - Contém apenas exemplos de chaves AWS, não credenciais reais
+  - Mantém disciplina do Gatekeeper intacta
+
+**Ficheiros atualizados:**
+- `ordem/codex_claude/CLAUDE_QUEUE.md` - Formatação Prettier corrigida
+- `ordem/codex_claude/relatorio.md` - Relatório atualizado com correções
+
+### TESTS
+**Validações executadas:**
+- ✅ **ESLint**: PASSOU
+- ✅ **Prettier**: PASSOU (formatação corrigida)
+- ✅ **Semgrep**: PASSOU (0 findings)
+- ✅ **Gitleaks**: PASSOU (README.md ignorado, 0 leaks found)
+- ✅ **npm audit**: PASSOU (0 vulnerabilities)
+- ✅ **pip-audit**: PASSOU (No known vulnerabilities)
+- ✅ **Sentry**: PASSOU (configuração presente)
+
+**Resultado**: **GATEKEEPER 7/7 PASSOU** ✅
+
+### SELF-CHECK
+- [x] .gitleaksignore criado/atualizado
+- [x] Gatekeeper 7/7 PASSOU localmente
+- [x] ordem/relatorio.md atualizado
+- [x] **RELATORIO.MD ATUALIZADO** (PLAN, PATCH, TESTS, SELF-CHECK)
+
+### Estado Final
+**Patch Gitleaks aplicado com sucesso!** O sistema agora inclui:
+- **Gitleaks corrigido** - README.md ignorado para evitar falsos positivos
+- **Disciplina mantida** - nenhum relaxamento de regras
+- **Gatekeeper 7/7** - todos os testes passando
+- **Pronto para CI** - deve passar a verde no GitHub Actions
+
+**Próximo passo**: Commit, tag v1.1.0 e push para finalizar a release.
